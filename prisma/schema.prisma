@@ -1,0 +1,86 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Institution {
+  id              String              @id @default(uuid())
+  institutionName String
+  logo            String
+  image           String
+  courses         InstitutionCourse[]
+  campuses        Campus[]
+}
+
+model Campus {
+  id         String @id @default(uuid())
+  campusname String
+
+  Institution   Institution?        @relation(fields: [institutionId], references: [id])
+  institutionId String?
+  courses       InstitutionCourse[]
+}
+
+model InstitutionCourse {
+  id            String             @id @default(uuid())
+  coursename    String
+  coursecode    String
+  Institution   Institution?       @relation(fields: [institutionId], references: [id])
+  institutionId String?
+  groups        InstitutionGroup[]
+  Campus        Campus?            @relation(fields: [campusId], references: [id])
+  campusId      String?
+}
+
+model InstitutionGroup {
+  id                  String             @id @default(uuid())
+  InstitutionCourse   InstitutionCourse? @relation(fields: [institutionCourseId], references: [id])
+  institutionCourseId String?
+  yeargroup           String
+  freePlanAllocation  Float?             @default(500.00)
+  storage             Float?             @default(0.0)
+  students            Student[]
+  units               Unit[]
+}
+
+model Student {
+  id                 String            @id @default(uuid())
+  InstitutionGroup   InstitutionGroup? @relation(fields: [institutionGroupId], references: [id])
+  institutionGroupId String?
+  email              String            @unique
+  firstname          String
+  files              File[]            @relation("PostedBy")
+  favorites          File[]            @relation("FavoritedBy")
+}
+
+model Unit {
+  id                 String            @id @default(uuid())
+  InstitutionGroup   InstitutionGroup? @relation(fields: [institutionGroupId], references: [id])
+  institutionGroupId String?
+  unitname           String
+  files              File[]
+}
+
+model File {
+  id             String    @id @default(uuid())
+  Student        Student?  @relation("PostedBy", fields: [studentId], references: [id])
+  studentId      String?
+  Unit           Unit?     @relation(fields: [unitId], references: [id])
+  unitId         String?
+  favoritedBy    Student[] @relation("FavoritedBy")
+  url            String
+  filename       String
+  createdAt      DateTime  @default(now())
+  filesize       String
+  actualFileSize Float?    @default(0)
+}

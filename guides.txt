@@ -1,0 +1,20 @@
+## MUST CHECK
+// if you have to add any room(of community) we must make sure it does not exist first,
+
+
+// if you want to add any file, make sure it does not exist first
+
+
+// if you have to add any file make sure that you exist to that community /class
+
+
+// the user visits our site, check if he is already in the database, if not display different screens for chosing a communit where he/she belongs
+
+
+// once identified, then request the user to be auth by kinde and from that request the user to pay as low as 10ksh
+
+
+// add the user to the correct database community
+
+
+// everytime the user visits again, check where he or she belongs and give him the place

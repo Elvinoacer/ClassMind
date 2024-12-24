@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE "InstitutionGroup" ALTER COLUMN "storage" SET DEFAULT 0.0,
+ALTER COLUMN "storage" SET DATA TYPE DOUBLE PRECISION;
