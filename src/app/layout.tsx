@@ -16,7 +16,8 @@ const geistMono = localFont({
 
 export const metadata: Metadata = {
   title: "ClassMind | Your choice doc store",
-  description: "Optimized to store student documents ",
+  description:
+    "Optimized to store student documents and get good summary from them ",
 };
 
 export default function RootLayout({

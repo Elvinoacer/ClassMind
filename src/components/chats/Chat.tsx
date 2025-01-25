@@ -17,7 +17,7 @@ const Chat = ({
   studentId: string;
 }) => {
   const { data: dbChats } = useGetMessagesQuery(groupId);
-  const allChats: MessageType[] = dbChats?.concat(chat);
+  const allChats: MessageType[] = dbChats ? dbChats?.concat(chat) : [];
   const scroller = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {

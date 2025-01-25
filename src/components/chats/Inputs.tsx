@@ -3,6 +3,7 @@ import Image from "next/image";
 import { ChangeEvent, Dispatch, SetStateAction, useState } from "react";
 import { SocketType } from ".";
 import { send } from "./assets";
+import { useAddChatMutation } from "@/rtk";
 
 interface InputChatType {
   user: { name: string; id: string };
@@ -22,6 +23,7 @@ const Inputs = ({
   institutionGroupId,
 }: InputChatType) => {
   const [input, setInput] = useState("");
+  const [addChat] = useAddChatMutation();
 
   const sendMessage = () => {
     if (input) {
@@ -33,7 +35,10 @@ const Inputs = ({
         studentId,
         groupId: institutionGroupId,
       };
-      socket.emit("send_message", msg, institutionGroupId);
+
+      socket.emit("send_message", msg, institutionGroupId, () => {
+        addChat(msg);
+      });
       socket.emit("user_typing", {
         user: user.name,
         typing: false,

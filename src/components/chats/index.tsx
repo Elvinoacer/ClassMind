@@ -5,7 +5,7 @@ import Inputs from "./Inputs";
 import SignUp from "./SignUp";
 import { useEffect, useState, useRef } from "react";
 import { io } from "socket.io-client";
-const socket = io("http://localhost:3001");
+const socket = io("https://elvin-socket.onrender.com");
 export type SocketType = typeof socket;
 
 export default function ChatScreen({

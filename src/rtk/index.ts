@@ -65,6 +65,13 @@ export const pokemonApi = createApi({
         method: "POST",
       }),
     }),
+    addChat: builder.mutation({
+      query: (query) => ({
+        url: `universities/chats`,
+        body: query,
+        method: "POST",
+      }),
+    }),
     connectStudent: builder.mutation({
       query: ({ student, groupId }: { student: Student; groupId: string }) => ({
         url: `universities/groups/${groupId}`,
@@ -131,6 +138,7 @@ export const {
   useGetGroupUnitsQuery,
   useGetMessagesQuery,
   useAddFileMutation,
+  useAddChatMutation,
   useAddDBFileMutation,
   useFavFileMutation,
 } = pokemonApi;

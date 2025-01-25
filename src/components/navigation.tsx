@@ -36,7 +36,7 @@ function Navigation({
     dispatch(toggleMenu(!toggledMenu));
   }
 
-  const searchUnits = units.map((unit, i) => ({
+  const searchUnits = units?.map((unit, i) => ({
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     //@ts-ignore
     label: unit.unitname,

@@ -63,7 +63,7 @@ export default function FileList({
   const dispatch = useDispatch();
   const [favoriteFile] = useFavFileMutation();
   const [deleting, setDeleting] = useState(false);
-  console.log(item);
+
   async function handleDeleteFile() {
     setDeleting(true);
     try {
@@ -75,7 +75,6 @@ export default function FileList({
     } catch (error) {
       console.error("Error deleting file:", error);
       toast.error("An Error occured");
-      console.log(error);
     }
     setDeleting(false);
   }

@@ -21,7 +21,7 @@ function Redirect() {
           picture: user?.picture,
         });
 
-        console.log("Yoo mkuu", data);
+      
         if (data?.exist && data.student.InstitutionGroup?.id) {
           window.location.assign(`/dashboard/${data?.student.id}`);
         } else {
