@@ -1,8 +1,7 @@
+import { pokemonApi } from "@/rtk";
 import { configureStore } from "@reduxjs/toolkit";
 import { setupListeners } from "@reduxjs/toolkit/query";
-import { pokemonApi } from "@/rtk";
 import counterReducer from "./features/counterslice";
-import { persistCombineReducers, persistStore } from "redux-persist";
 
 // import storage from "redux-persist/lib/storage";
 

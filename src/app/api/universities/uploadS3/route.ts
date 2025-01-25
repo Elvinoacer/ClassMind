@@ -1,36 +1,15 @@
-import { PutObjectCommand, S3Client } from "@aws-sdk/client-s3";
 import { NextResponse } from "next/server";
-
-export const s3Client = new S3Client({
-  region: process.env.NEXT_PUBLIC_AWS_S3_REGION!,
-  credentials: {
-    accessKeyId: process.env.AWS_ACCESS_KEY_ID!,
-    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY!,
-  },
-});
-
-export async function uploadFileToS3(fileBuffer, filename, fileType) {
-  const params = {
-    Bucket: process.env.NEXT_PUBLIC_AWS_S3_BUCKET_NAME,
-    Key: `elvinTrial/${filename}`,
-    Body: fileBuffer,
-    ContentType: fileType,
-  };
-
-  const command = new PutObjectCommand(params);
-  await s3Client.send(command);
-
-  return {
-    fileName: params.Key,
-    url: `https://${process.env.NEXT_PUBLIC_AWS_S3_BUCKET_NAME}.s3.amazonaws.com/${params.Key}`,
-  };
-}
-
+import { uploadFileToS3 } from "./helper";
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+//@ts-ignore
 export async function POST(req) {
   try {
     if (req.method !== "POST") {
       throw { error: "Method not allowed Elvin" };
     }
+
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    //@ts-ignore
     const formData = await req.formData();
 
     const file = formData.get("file");
@@ -57,11 +36,13 @@ export async function POST(req) {
 
       const { fileName: logoName, url: logoUrl } = await uploadFileToS3(
         logoBuffer,
-        logo.name
+        logo.name,
+        logo.type
       );
       const { fileName: imageName, url: imageUrl } = await uploadFileToS3(
         imageBuffer,
-        image.name
+        image.name,
+        image.type
       );
 
       return NextResponse.json({ logoName, imageName, logoUrl, imageUrl });

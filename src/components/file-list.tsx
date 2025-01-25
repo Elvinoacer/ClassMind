@@ -1,15 +1,19 @@
-import { useAppSelector } from "@/hooks";
-import { addFavoriteFile, addPDF } from "@/store/features/counterslice";
-import { FileContent, FileType } from "@/types/prismatypes";
+import { deleteFile } from "@/app/_actions/handleSubmitForm";
+import { useFavFileMutation } from "@/rtk";
+import {
+  addFavFile,
+  addPDF,
+  removeDBFile,
+  removeFavFile,
+} from "@/store/features/counterslice";
+import { FileTypeDB } from "@/types/prismatypes";
 import { useState } from "react";
 import { IoMdStar } from "react-icons/io";
 import { MdDeleteSweep } from "react-icons/md";
-import { useDispatch } from "react-redux";
 import { RiProhibitedLine } from "react-icons/ri";
+import { useDispatch } from "react-redux";
 import { Toaster, toast } from "sonner";
 import CircularColor from "./material-ui/circular-progress";
-import { deleteFile } from "@/app/_actions/handleSubmitForm";
-import { useFavFileMutation } from "@/rtk";
 
 function formatFileSize(fileSize: string) {
   const file = fileSize.split(" ");
@@ -25,7 +29,7 @@ function truncateText(text: string, maxLength: number) {
   }
 }
 
-function formatTimestamp(timestampString) {
+function formatTimestamp(timestampString: string) {
   // Parse the timestamp string into a Date object
   const timestamp = new Date(timestampString);
 
@@ -43,32 +47,37 @@ function formatTimestamp(timestampString) {
 export default function FileList({
   studentId,
   item,
+  groupId,
   handleShowModal,
   uploader,
   favoriteFiles,
 }: {
-  item: FileContent;
-  favoriteFiles: FileType[];
+  item: FileTypeDB;
+  unitId?: string;
+  groupId: string;
+  favoriteFiles: FileTypeDB[];
   studentId: string;
   handleShowModal?: (val: string) => void;
   uploader: string;
 }) {
-  console.log(item);
   const dispatch = useDispatch();
-
   const [favoriteFile] = useFavFileMutation();
   const [deleting, setDeleting] = useState(false);
-
+  console.log(item);
   async function handleDeleteFile() {
+    setDeleting(true);
     try {
-      setDeleting(true);
-      await deleteFile(item);
+      await deleteFile({ ...item, groupId });
+      dispatch(removeDBFile({ fileId: item.id || "", unitId: item.unitId }));
+      dispatch(removeFavFile(item.id || ""));
       setDeleting(false);
       toast.success("File deleted successfully");
     } catch (error) {
+      console.error("Error deleting file:", error);
       toast.error("An Error occured");
-      setDeleting(false);
+      console.log(error);
     }
+    setDeleting(false);
   }
 
   return (
@@ -81,7 +90,6 @@ export default function FileList({
             handleShowModal(uploader);
           }
           dispatch(addPDF(item.url));
-          console.log(item.url);
         }}
       >
         <p className="capitalize">{truncateText(item.filename, 20)}</p>
@@ -104,19 +112,19 @@ export default function FileList({
             size={32}
             onClick={async () => {
               if (favoriteFiles.some((file) => file.id === item.id)) {
-                const data = await favoriteFile({
+                dispatch(removeFavFile(item.id || ""));
+                await favoriteFile({
                   action: "unFav",
-                  fileId: item.id,
+                  fileId: item.id || "",
                   studentId: studentId,
                 });
-                console.log(data);
               } else {
-                const data = await favoriteFile({
+                dispatch(addFavFile(item));
+                await favoriteFile({
                   action: "Fav",
-                  fileId: item.id,
+                  fileId: item.id || "",
                   studentId: studentId,
                 });
-                console.log(data);
               }
             }}
             color={

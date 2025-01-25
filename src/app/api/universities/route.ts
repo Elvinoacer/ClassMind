@@ -1,10 +1,8 @@
-import { InstitutionGroup } from "./../../../types/prismatypes";
 import { db } from "@/lib/prisma";
 import { NextResponse } from "next/server";
-import { universities } from "@/app/universities";
 
 //GET ALL UNIVERSITIES
-export async function GET(req: Request) {
+export async function GET() {
   const universities = await db.institution
     .findMany
     // {
@@ -16,75 +14,60 @@ export async function GET(req: Request) {
   return NextResponse.json(universities);
 }
 
-// // export async function POST(req: Request) {
-// //   const formData = await req.formData();
-// //   try {
-// //     const file = formData.get("file");
-// //     // const data = await req.json();
-// //     // const formData = await req.formData();
-// //     // const logo = formData.get("image");
-// //     // const image =  formData.get("image");
-
-// //     // const newUniversity = {
-// //     //   institutionName: formData.get("institutionName"),
-// //     //   logo: formData.get("logo"),
-// //     //   image: formData.get("image"),
-// //     //   campus: formData.get("campus"),
-// //     //   courses: JSON.parse(formData.get("courses")),
-// //     // };
-
-// //     // console.log(logo);
-
-// //     console.log(file);
-
-// //     return NextResponse.json({ message: "Your file" });
-// //   } catch (e) {
-// //     return NextResponse.json({ error: "There is an error Elvin", e });
-// //   }
-// // }
-
-// //create institution
-
-// export async function POST(req) {
+// export async function POST(req: Request) {
+//   const formData = await req.formData();
+//   // const data = await req.json();
 //   try {
-//     if (req.method !== "POST") {
-//       throw { error: "Method not allowed Elvin" };
-//     }
+//     const file = formData.get("file");
+//     const logo = formData.get("image");
+//     const image = formData.get("image");
 
-//     const { institutionName, logo, image, campus } = await req.json();
+//     const newUniversity = {
+//       institutionName: formData.get("institutionName"),
+//       logo: formData.get("logo"),
+//       image: formData.get("image"),
+//       campus: formData.get("campus"),
+//       courses: JSON.parse(formData.get("courses")),
+//     };
 
-//     const transData = { institutionName, logo, image };
-
-//     const university = await db.institution.create({
-//       data: transData,
-//     });
-//     const updatedUni = await db.institution.update({
-//       where: {
-//         id: university.id,
-//       },
-//       data: {
-//         campuses: {
-//           create: {
-//             campusname: campus,
-//           },
-//         },
-//       },
-//     });
-//     return NextResponse.json(updatedUni);
-//   } catch (error) {
-//     return NextResponse.json({ error: error });
+//     return NextResponse.json({ message: "Your file" });
+//   } catch (e) {
+//     return NextResponse.json({ error: "There is an error Elvin", e });
 //   }
 // }
 
-export async function POST(request: Request) {
-  console.log("Requested");
+// create institution
+
+export async function POST(req: Request) {
   try {
-    const unis = await db.institution.createMany({
-      data: universities,
+    if (req.method !== "POST") {
+      throw { error: "Method not allowed Elvin" };
+    }
+
+    const { institutionName, logo, image, campus } = await req.json();
+
+    // return NextResponse.json({ institutionName, logo, image, campus });
+
+    const transData = { institutionName, logo, image };
+
+    const university = await db.institution.create({
+      data: transData,
     });
-    return NextResponse.json(unis);
+    const updatedUni = await db.institution.update({
+      where: {
+        id: university.id,
+      },
+      data: {
+        campuses: {
+          create: {
+            campusname: campus,
+          },
+        },
+      },
+    });
+    return NextResponse.json(updatedUni);
   } catch (error) {
-    return NextResponse.json({ errorElvn: error });
+    return NextResponse.json({ error: error });
   }
 }
 

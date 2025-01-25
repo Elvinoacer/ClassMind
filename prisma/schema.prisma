@@ -57,6 +57,7 @@ model Student {
   id                 String            @id @default(uuid())
   InstitutionGroup   InstitutionGroup? @relation(fields: [institutionGroupId], references: [id])
   institutionGroupId String?
+  picture            String?
   email              String            @unique
   firstname          String
   files              File[]            @relation("PostedBy")
@@ -83,4 +84,26 @@ model File {
   createdAt      DateTime  @default(now())
   filesize       String
   actualFileSize Float?    @default(0)
+}
+
+model Message {
+  id            String       @id @default(uuid())
+  content       String
+  type          MessageType  @default(text)
+  user          UserMessage? @relation(fields: [userMessageId], references: [id])
+  groupId       String       @default(uuid())
+  picture       String?
+  userMessageId String?      @unique
+  studentId     String
+}
+
+model UserMessage {
+  id      String   @id @default(uuid())
+  name    String
+  Message Message?
+}
+
+enum MessageType {
+  text
+  server
 }

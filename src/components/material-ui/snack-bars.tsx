@@ -1,9 +1,7 @@
 "use client";
-import * as React from "react";
-import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
 import Snackbar, { SnackbarOrigin } from "@mui/material/Snackbar";
+import * as React from "react";
 
 export interface PositionedSnackbarProps {
   handleOpen: (newState: SnackbarOrigin) => void;
@@ -14,6 +12,8 @@ interface State extends SnackbarOrigin {
   open: boolean;
 }
 
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+//@ts-ignore
 function PositionedSnackbar(props, ref: React.Ref<PositionedSnackbarProps>) {
   const [state, setState] = React.useState<State>({
     open: false,
@@ -23,7 +23,6 @@ function PositionedSnackbar(props, ref: React.Ref<PositionedSnackbarProps>) {
   const { vertical, horizontal, open } = state;
 
   const handleOpen = (newState: SnackbarOrigin) => () => {
-    console.log("IS OPEN BRO");
     setState({
       ...newState,
       open: true,
@@ -41,50 +40,50 @@ function PositionedSnackbar(props, ref: React.Ref<PositionedSnackbarProps>) {
     handleOpen,
   }));
 
-  const buttons = (
-    <React.Fragment>
-      <Box sx={{ display: "flex", justifyContent: "center" }}>
-        <Button onClick={handleOpen({ vertical: "top", horizontal: "center" })}>
-          Top-Center
-        </Button>
-      </Box>
-      <Grid container sx={{ justifyContent: "center" }}>
-        <Grid item xs={6}>
-          <Button onClick={handleOpen({ vertical: "top", horizontal: "left" })}>
-            Top-Left
-          </Button>
-        </Grid>
-        <Grid item xs={6} sx={{ textAlign: "right" }}>
-          <Button
-            onClick={handleOpen({ vertical: "top", horizontal: "right" })}
-          >
-            Top-Right
-          </Button>
-        </Grid>
-        <Grid item xs={6}>
-          <Button
-            onClick={handleOpen({ vertical: "bottom", horizontal: "left" })}
-          >
-            Bottom-Left
-          </Button>
-        </Grid>
-        <Grid item xs={6} sx={{ textAlign: "right" }}>
-          <Button
-            onClick={handleOpen({ vertical: "bottom", horizontal: "right" })}
-          >
-            Bottom-Right
-          </Button>
-        </Grid>
-      </Grid>
-      <Box sx={{ display: "flex", justifyContent: "center" }}>
-        <Button
-          onClick={handleOpen({ vertical: "bottom", horizontal: "center" })}
-        >
-          Bottom-Center
-        </Button>
-      </Box>
-    </React.Fragment>
-  );
+  // const buttons = (
+  //   <React.Fragment>
+  //     <Box sx={{ display: "flex", justifyContent: "center" }}>
+  //       <Button onClick={handleOpen({ vertical: "top", horizontal: "center" })}>
+  //         Top-Center
+  //       </Button>
+  //     </Box>
+  //     <Grid container sx={{ justifyContent: "center" }}>
+  //       <Grid item xs={6}>
+  //         <Button onClick={handleOpen({ vertical: "top", horizontal: "left" })}>
+  //           Top-Left
+  //         </Button>
+  //       </Grid>
+  //       <Grid item xs={6} sx={{ textAlign: "right" }}>
+  //         <Button
+  //           onClick={handleOpen({ vertical: "top", horizontal: "right" })}
+  //         >
+  //           Top-Right
+  //         </Button>
+  //       </Grid>
+  //       <Grid item xs={6}>
+  //         <Button
+  //           onClick={handleOpen({ vertical: "bottom", horizontal: "left" })}
+  //         >
+  //           Bottom-Left
+  //         </Button>
+  //       </Grid>
+  //       <Grid item xs={6} sx={{ textAlign: "right" }}>
+  //         <Button
+  //           onClick={handleOpen({ vertical: "bottom", horizontal: "right" })}
+  //         >
+  //           Bottom-Right
+  //         </Button>
+  //       </Grid>
+  //     </Grid>
+  //     <Box sx={{ display: "flex", justifyContent: "center" }}>
+  //       <Button
+  //         onClick={handleOpen({ vertical: "bottom", horizontal: "center" })}
+  //       >
+  //         Bottom-Center
+  //       </Button>
+  //     </Box>
+  //   </React.Fragment>
+  // );
 
   return (
     <Box>

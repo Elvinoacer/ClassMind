@@ -14,14 +14,12 @@ export interface UserType {
   given_name: string | null;
 }
 
-export function storeUserDetails(user: UserType) {
-  const databaseData = {
-    id: user.id,
-    username: user.given_name,
-    email: user.email,
-  };
-  console.log(databaseData);
-}
+// export function storeUserDetails(user: UserType) {
+// const databaseData = {
+//   id: user.id,
+//   username: user.given_name,
+//   email: user.email,
+// };
 
 // ///
 ///TODO MAKE JAVASCRIPT WORK WITH  NEXTJS
@@ -47,3 +45,4 @@ export function storeUserDetails(user: UserType) {
 // });
 
 // ///
+// }

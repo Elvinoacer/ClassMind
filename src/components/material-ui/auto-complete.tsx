@@ -1,8 +1,7 @@
 "use client";
-import * as React from "react";
-import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
-import top100Films from "./top100Films";
+import TextField from "@mui/material/TextField";
+import * as React from "react";
 
 export default function ComboBox({
   options,
@@ -15,19 +14,18 @@ export default function ComboBox({
 }) {
   return (
     <Autocomplete
-      onChange={(e) => {
-        console.log(e);
-      }}
       disablePortal
       className="bg-blue-500 rounded-lg text-white"
-      options={options ?? top100Films}
+      options={options ?? []}
       sx={{ width: 300 }}
       renderOption={(props, option) => (
         <li
           {...props}
           key={option.value}
           onClick={(e: React.MouseEvent<HTMLLIElement, MouseEvent>) => {
-            props?.onClick(e);
+            if (props.onClick) {
+              props.onClick(e);
+            }
             handleSearchValue(option.value);
           }}
         >

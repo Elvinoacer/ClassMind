@@ -91,8 +91,9 @@ const Skeleton = styled("div")<{ height: number }>(({ theme, height }) => ({
   height,
   content: '" "',
 }));
-
-export default function DashboardLayoutBasic(props: any) {
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+//@ts-ignore
+export default function DashboardLayoutBasic(props) {
   const { window } = props;
 
   const router = useDemoRouter("/dashboard");

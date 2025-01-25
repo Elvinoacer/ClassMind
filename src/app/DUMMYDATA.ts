@@ -39,7 +39,7 @@ export function generateCourseCode(courseName: string) {
     .join("");
 }
 
-interface CourseType {
+export interface CourseType {
   courseName: string;
   couseCode: string;
   students: StudentType[];
@@ -132,14 +132,17 @@ export class Community implements CommunityType {
     }
   }
   // how are we going to add course
-  addCourse(course: CourseType, institutionId: string) {
-    const institution = communities.find(
-      (community) => community.id === institutionId
-    );
-    // const;
-  }
-
-  addUnit(unit: UnitType, courseCode: string) {}
+  // addCourse(course: CourseType, institutionId: string) {
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  //@ts-ignore
+  // const institution = communities.find(
+  //   (community) => community.id === institutionId
+  // );
+  // const;
+  // }
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  //@ts-ignore
+  // addUnit(unit: UnitType, courseCode: string) {}
 }
 
 //Hierachy
@@ -154,7 +157,7 @@ export class Community implements CommunityType {
 
 // }
 
-const course = {
+export const course = {
   courseName: "Computer science",
   courseCode: "CS",
   groups: [
@@ -177,18 +180,18 @@ const course = {
   ],
 };
 
-const institution1 = [
-  {
-    institutionName: "Moi University",
-    campus: "Main",
-    institutionId: "somthingrandom",
-    courses: [course],
-  },
-];
+// const institution1 = [
+//   {
+//     institutionName: "Moi University",
+//     campus: "Main",
+//     institutionId: "somthingrandom",
+//     courses: [course],
+//   },
+// ];
 
 //define models
 
-interface InstitutionType {
+export interface InstitutionType {
   institutionName: string;
   campus: string;
   institutionId: string;
@@ -212,14 +215,14 @@ interface UnitType2 {
   files?: string[];
 }
 
-class NewInstitution {
-  institutions: InstitutionType[] = [];
-  institution: NewInstitution;
+// class NewInstitution {
+//   institutions: InstitutionType[] = [];
+//   institution: NewInstitution;
 
-  constructor(institution: InstitutionType) {
-    this.institution = new NewInstitution(institution);
-  }
-}
+//   constructor(institution: InstitutionType) {
+//     this.institution = new NewInstitution(institution);
+//   }
+// }
 export interface DummyUsersTye {
   unitName: string;
   files: {

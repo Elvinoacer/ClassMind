@@ -30,6 +30,9 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <Rprovider>{children}</Rprovider>
+        <div className="text-[10px] text-blue-500 fixed bottom-1 left-[50%]">
+          &copy; LVN Techies
+        </div>
       </body>
     </html>
   );

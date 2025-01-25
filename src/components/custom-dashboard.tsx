@@ -17,8 +17,8 @@ function CustomDashboard({
   units: Unit[] | React.ReactElement;
 }) {
   const dispatch = useDispatch();
-  const obtainedUnits = useAppSelector((state) => state.counter.Units);
-  const indexFileNav = useAppSelector((state) => state.counter.indexFileNav);
+  const obtainedUnits = useAppSelector((state) => state.counter.DBUnits);
+  // const indexFileNav = useAppSelector((state) => state.counter.indexFileNav);
 
   const unitRef = useRef<Rprops | null>(null);
 
@@ -30,17 +30,14 @@ function CustomDashboard({
         <i className="bx bx-filter"></i> */}
       </div>
       <ul className="todo-list">
-        {Array.isArray(units) ? (
-          units.map((item, index) => {
-            console.log(index);
+        {Array.isArray(obtainedUnits) ? (
+          obtainedUnits.map((item, index) => {
             return (
               <li
                 className="hover:cursor-pointer relative"
                 key={index.toString()}
                 onClick={() => {
                   dispatch(setIndexFileNav(index));
-
-                  console.log("NAVIGATING TO FILE NUMBER", index);
                 }}
               >
                 <p>{item.unitname ?? "doesnt exist"}</p>

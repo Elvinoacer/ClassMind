@@ -84,6 +84,7 @@ a {
 
 body {
   font-family: "Raleway", sans-serif;
+  width: 100%;
 }
 
 nav {
@@ -95,7 +96,7 @@ nav {
   align-items: center;
   justify-content: space-between;
   gap: 2rem 1rem;
-  border-bottom: 1px solid var(--text-light);
+  /* border-bottom: 1px solid var(--text-light); */
 }
 
 .nav__logo {
@@ -123,6 +124,7 @@ nav {
   list-style: none;
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
   justify-content: center;
   gap: 1rem;
 }
@@ -182,9 +184,9 @@ nav {
 
 .header__container h1 {
   margin-bottom: 1rem;
-  font-size: 4rem;
+  font-size: clamp(2rem, 4vw, 4rem);
   font-weight: 700;
-  line-height: 5rem;
+  line-height: clamp(2rem, 4vw, 5rem);
   color: var(--text-dark);
 }
 
@@ -247,6 +249,12 @@ nav {
   border-radius: 10px;
   cursor: pointer;
 }
+
+.call-text {
+  font-size: 3vmin;
+  white-space: nowrap;
+  color: #6b7280;
+}
 .header__image .image {
   mix-blend-mode: darken;
 }
@@ -273,7 +281,7 @@ nav {
 
   .nav__contact {
     flex: 1;
-    justify-content: flex-end;
+    /* justify-content: flex-end; */
   }
 
   .header__container {
@@ -362,7 +370,13 @@ html {
   overflow-x: hidden;
   scrollbar-width: none;
 }
-#sidebar::--webkit-scrollbar {
+.modal-unit {
+  align-self: center;
+  justify-self: center;
+  width: 100px;
+  z-index: 5000;
+}
+#sidebar::state(webkit-scrollbar) {
   display: none;
 }
 #sidebar.hide {
@@ -585,7 +599,8 @@ html {
   justify-content: center;
   align-items: center;
 }
-.profile img {
+.profile img,
+.profile span {
   width: 36px;
   height: 36px;
   margin-left: 100px;
@@ -720,6 +735,7 @@ html {
 #content main .table-data {
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
   grid-gap: 24px;
   margin-top: 24px;
   width: 100%;
@@ -1079,10 +1095,10 @@ a {
     margin-inline: 1rem;
   }
 
-  .card__container {
+  /* .card__container {
     grid-template-columns: 1fr 1fr 1fr;
     justify-self: center;
-  }
+  } */
 }
 
 /* For large devices */
@@ -1130,6 +1146,12 @@ body:has(.formCardsContainer) {
   margin-bottom: 10px;
 }
 
+@media (max-width: 514px) {
+  .formCardsContainer h2 {
+    font-size: clamp(18px, 3vw, 36px);
+  }
+}
+
 .formCardsContainer .row100 {
   position: relative;
   width: 100%;
@@ -1174,6 +1196,7 @@ body:has(.formCardsContainer) {
   left: 0;
   line-height: 40px;
   font-size: 18px;
+
   padding: 0 10px;
   display: block;
   transition: 0.5s;
@@ -1247,16 +1270,17 @@ input[type="submit"] {
 }
 
 .addText {
-  font-size: 1.5rem;
+  font-size: clamp(0.5rem, 3vw, 1.5rem);
 }
 .addButton {
   height: 30px;
   color: black;
   display: flex;
   align-items: center;
-  background-color: white;
+  background-color: #3b82f6;
   padding: 15px 30px;
   border-radius: 100px;
+  font-weight: bold;
 }
 
 /* Upload */
@@ -1283,6 +1307,8 @@ input[type="submit"] {
   width: 100%;
   display: flex;
   justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 20px;
 }
 
 .imageContainer-upload {
@@ -2049,20 +2075,21 @@ img {
 }
 
 .action-button {
-  padding: 1rem 2rem;
-  font-size: clamp(10px, 3vw, 20px);
-  font-weight: bold;
-  text-transform: uppercase;
+  align-items: center;
   background-color: #161a20;
+  border-radius: 100px;
   border-width: 1px;
   color: #f0f0f0;
-  transition: all 0.5s;
-  position: relative;
-  border-radius: 100px;
-  font-family: inherit;
+  cursor: pointer;
   display: flex;
+  font-family: inherit;
+  font-size: clamp(10px, 3vw, 20px);
+  font-weight: bold;
   justify-content: center;
-  align-items: center;
+  padding: 1rem 2rem;
+  position: relative;
+  text-transform: uppercase;
+  transition: all 0.5s;
 }
 
 .action-button::after {
@@ -2119,6 +2146,29 @@ img {
 
 .pie-details {
   margin-top: -130px;
+}
+.allocation-space {
+  white-space: nowrap;
+}
+
+.wrapper-span {
+  white-space: nowrap;
+  margin-bottom: 10px;
+}
+
+@media (max-width: 450px) {
+  .pie-details {
+    margin-top: -100px;
+  }
+  .wrapper-span {
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 390px) {
+  .pie-details {
+    margin-top: -70px;
+  }
 }
 
 /* ANimated button */
@@ -2227,13 +2277,22 @@ img {
 }
 
 *::-webkit-scrollbar {
-  width: 0.6rem;
+  width: 1px;
 }
 
 *::-webkit-scrollbar-thumb {
   background-color: rgb(163, 209, 255);
-  border-radius: 1rem;
+  border-radius: 5rem;
   /* outline: 1px solid slategrey; */
+}
+
+@media (max-width: 400px) {
+  .text-communicate {
+    font-size: 25px;
+  }
+  .screen-chat {
+    justify-self: center;
+  }
 }
 
 .loader {
@@ -2529,3 +2588,116 @@ img {
   width: 100%;
   justify-self: flex-start;
 } */
+
+/* REDIRECT SCREEN */
+
+.dot-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: #6b21a8;
+  margin: 0 5px;
+  animation: bounce 1s infinite ease-in-out;
+}
+
+.dot:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.dot:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+@keyframes bounce {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+/* AUTH SCREEN */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.body-login {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: url("../../public/images/img.jpg") no-repeat;
+  background-size: cover;
+  background-position: center;
+}
+
+.wrapper {
+  width: 420px;
+  background: transparent;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(20px);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  color: #fff;
+  border-radius: 10px;
+  padding: 30px 40px;
+}
+
+.wrapper h1 {
+  font-size: 36px;
+  text-align: center;
+}
+
+.wrapper .btn {
+  width: 100%;
+  height: 45px;
+  background: #fff;
+  outline: none;
+  border: none;
+  border-radius: 40px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  font-size: 16px;
+  color: #333;
+  font-weight: 600;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+/* Tooltip */
+.tooltip {
+  position: relative;
+  display: inline-block;
+}
+
+.tooltip .tooltiptext {
+  visibility: hidden;
+  width: 120px;
+  background-color: black;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 0;
+  position: absolute;
+  z-index: 1;
+  bottom: 125%;
+  left: 50%;
+  margin-left: -60px;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+  opacity: 1;
+}

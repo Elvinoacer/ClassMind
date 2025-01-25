@@ -2,7 +2,10 @@ import { db } from "@/lib/prisma";
 import { NextResponse } from "next/server";
 
 //get all file for a specific unit
-export async function GET(req: Request, context: { params: any }) {
+export async function GET(
+  req: Request,
+  context: { params: Promise<{ unitId: string }> }
+) {
   try {
     const { unitId } = await context.params;
 
@@ -25,7 +28,10 @@ export async function GET(req: Request, context: { params: any }) {
  * create File
  */
 
-export async function POST(req: Request, context: { params: any }) {
+export async function POST(
+  req: Request,
+  context: { params: Promise<{ unitId: string }> }
+) {
   const { unitId } = await context.params;
 
   const data = await req.json();

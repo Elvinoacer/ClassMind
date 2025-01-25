@@ -1,9 +1,6 @@
-import { useGetUniversityQuery } from "@/rtk";
-import React from "react";
-import UniversityDetails from "./universityDetails";
 import MockUp from "./mock-up";
 
-async function Page({ params }) {
+async function Page({ params }: { params: Promise<{ uniId: string }> }) {
   const { uniId } = await params;
 
   return (

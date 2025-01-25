@@ -34,13 +34,7 @@ function HeadTitle({
           </a>
         </div>
         {sideBarNav === SideBarEn.classstore && (
-          <ul
-            className="breadcrumb"
-            ref={listRef}
-            onClick={(e) => {
-              console.log(e.target);
-            }}
-          >
+          <ul className="breadcrumb" ref={listRef} onClick={() => {}}>
             <li
               onClick={() => dispatch(setIndexFileNav(undefined))}
               className="hover:cursor-pointer"

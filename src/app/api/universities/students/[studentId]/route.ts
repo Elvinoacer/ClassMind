@@ -2,7 +2,10 @@ import { db } from "@/lib/prisma";
 import { NextResponse } from "next/server";
 
 //get student and his files
-export async function GET(req: Request, context: { params: any }) {
+export async function GET(
+  req: Request,
+  context: { params: Promise<{ studentId: string }> }
+) {
   const { studentId } = await context.params;
   try {
     const student = await db.student.findFirst({
@@ -26,6 +29,9 @@ export async function GET(req: Request, context: { params: any }) {
         },
       },
     });
+    if (!student) {
+      return NextResponse.json({ status: 404 });
+    }
 
     return NextResponse.json(student);
   } catch (error) {
@@ -35,12 +41,13 @@ export async function GET(req: Request, context: { params: any }) {
 
 //create file for a student
 
-export async function POST(req: Request, context: { params: any }) {
-  console.log("A POST REQUEST HAS BEEN DONE");
+export async function POST(
+  req: Request,
+  context: { params: Promise<{ studentId: string }> }
+) {
   const { studentId } = await context.params;
   const data = await req.json();
-  console.log("line39", data);
-  console.log("studentId", studentId);
+
   const groupId = data.groupId;
   try {
     if (!groupId) return NextResponse.json("No Group Id Provided");
@@ -83,7 +90,10 @@ export async function POST(req: Request, context: { params: any }) {
   }
 }
 
-export async function DELETE(req: Request, context: { params: any }) {
+export async function DELETE(
+  req: Request,
+  context: { params: Promise<{ studentId: string }> }
+) {
   const fileId = await req.json();
   const { studentId } = await context.params;
 
@@ -113,7 +123,10 @@ export async function DELETE(req: Request, context: { params: any }) {
   }
 }
 
-export async function PUT(req, context: { params: any }) {
+export async function PUT(
+  req: Request,
+  context: { params: Promise<{ studentId: string }> }
+) {
   const { studentId } = await context.params;
   const { fileId, action }: { fileId: string; action: "Fav" | "unFav" } =
     await req.json();

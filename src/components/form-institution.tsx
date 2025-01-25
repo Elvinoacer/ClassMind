@@ -1,5 +1,5 @@
 "use client";
-import { useAddUniversityMutation, useAddFileMutation } from "@/rtk";
+import { useAddFileMutation, useAddUniversityMutation } from "@/rtk";
 
 import {
   addInstitution,
@@ -25,9 +25,10 @@ function FormComponent() {
 
   const [submitting, setSubmitting] = useState<boolean>(false);
 
-  const [pickedFiles, setPickedFiles] = useState<{ image: File; logo: File }>(
-    {}
-  );
+  const [pickedFiles, setPickedFiles] = useState<{
+    image: File | null;
+    logo: File | null;
+  }>({ image: null, logo: null });
 
   const [institution, setInstitution] = useState<InstitutionType>({
     image: "",
@@ -38,8 +39,7 @@ function FormComponent() {
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    // setSubmitting(true);
-    console.log(pickedFiles);
+    setSubmitting(true);
 
     if (!pickedFiles.logo || !pickedFiles.image) {
       return alert("Please select the required files");
@@ -52,16 +52,14 @@ function FormComponent() {
 
     const { data } = await addAwsFile(formData);
 
-    console.log(data);
-
     const { data: DBData } = await addUniversity({
       image: data.imageUrl,
       institutionName: institution.institutionName,
       logo: data.logoUrl,
       campus: institution.campus,
     });
-    console.log("HURRAY DB DATA NOW AVAILABLE", DBData);
-    dispatch(addInstitution(data));
+
+    dispatch(addInstitution(DBData));
     dispatch(navigateRegisterInstitution(FormTypesNav.course));
     setSubmitting(false);
   }
@@ -78,7 +76,7 @@ function FormComponent() {
     e: ChangeEvent<HTMLInputElement>
   ) {
     const files = e.target.files;
-    if (!files) return console.log("No file was picked");
+    if (!files) return alert("No file was picked");
     setPickedFiles((prev) => ({ ...prev, [typeImage]: files[0] }));
     setInstitution((prev) => ({
       ...prev,
@@ -130,50 +128,58 @@ function FormComponent() {
         <div className="row100"></div>
         <div className="row100">
           <div className="col">
+            {/* <div className="file-uploadBox ">
+              
+             
+            </div> */}
             <div className="file-uploadBox">
-              {!institution.image && (
-                <InputForFileImage
-                  name="image"
-                  key={1}
-                  onChange={(e) => handleFileChange("image", e)}
-                  label="Upload Image of your institution"
-                />
-              )}
-              {institution.image && <div className="text-[#45f3ff]">Great</div>}
-              <InputForFile
-                name="logo"
-                className="ml-72"
-                key={2}
-                onChange={(e) => handleFileChange("logo", e)}
-                label="Upload Logo of your institution"
-              />
-            </div>
-            <div className="file-uploadBox">
-              <div className="imageContainer-upload">
-                {institution.image && (
-                  <Image
-                    src={institution.image}
-                    alt="university Image"
-                    height={200}
-                    width={200}
-                  />
-                )}
+              <div>
                 {!institution.image && (
-                  <div className="text-white">No Image picked yet</div>
-                )}
-              </div>
-              <div className="imageContainer-upload">
-                {institution.logo && (
-                  <Image
-                    src={institution.logo}
-                    alt="university logo"
-                    height={200}
-                    width={200}
+                  <InputForFileImage
+                    name="image"
+                    key={1}
+                    onChange={(e) => handleFileChange("image", e)}
+                    label="Upload Image of your institution"
                   />
                 )}
-                {!institution.logo && (
-                  <div className="text-white">No Logo picked yet</div>
+                {institution.image && (
+                  <div className="text-[#45f3ff]">Great</div>
                 )}
+                <div className="imageContainer-upload">
+                  {institution.image && (
+                    <Image
+                      src={institution.image}
+                      alt="university Image"
+                      height={200}
+                      width={200}
+                    />
+                  )}
+                  {!institution.image && (
+                    <div className="text-white">No Image picked yet</div>
+                  )}
+                </div>
+              </div>
+              <div>
+                <InputForFile
+                  name="logo"
+                  className="ml-72 "
+                  key={2}
+                  onChange={(e) => handleFileChange("logo", e)}
+                  label="Upload Logo of your institution"
+                />
+                <div className="imageContainer-upload">
+                  {institution.logo && (
+                    <Image
+                      src={institution.logo}
+                      alt="university logo"
+                      height={200}
+                      width={200}
+                    />
+                  )}
+                  {!institution.logo && (
+                    <div className="text-white">No Logo picked yet</div>
+                  )}
+                </div>
               </div>
             </div>
           </div>

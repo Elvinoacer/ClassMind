@@ -6,26 +6,22 @@ import {
   setUniSelectionIndex,
 } from "@/store/features/counterslice";
 import { FormTypesNav } from "@/types/prismatypes";
-import Box from "@mui/material/Box";
-import Paper from "@mui/material/Paper";
-import Stack from "@mui/material/Stack";
-import { styled } from "@mui/material/styles";
-import { useRouter } from "next/navigation";
+// import { useRouter } from "next/navigation";
 import * as React from "react";
 import { useDispatch } from "react-redux";
 import EmptySelection from "../empty-selection";
 import CircularColor from "./circular-progress";
 import BasicModal from "./modal";
-const Item = styled(Paper)(({ theme }) => ({
-  backgroundColor: "#fff",
-  ...theme.typography.body2,
-  padding: theme.spacing(1),
-  textAlign: "center",
-  color: theme.palette.text.secondary,
-  ...theme.applyStyles("dark", {
-    backgroundColor: "#1A2027",
-  }),
-}));
+// const Item = styled(Paper)(({ theme }) => ({
+//   backgroundColor: "#fff",
+//   ...theme.typography.body2,
+//   padding: theme.spacing(1),
+//   textAlign: "center",
+//   color: theme.palette.text.secondary,
+//   ...theme.applyStyles("dark", {
+//     backgroundColor: "#1A2027",
+//   }),
+// }));
 
 export interface BasicRef {
   campusId: string;
@@ -53,7 +49,7 @@ function BasicStack(
     (state) => state.counter.uniSelectionIndex
   );
 
-  const router = useRouter();
+  // const router = useRouter();
 
   const dispatch = useDispatch();
   const [selectedKey, setSelectedKey] = React.useState("");
@@ -61,7 +57,7 @@ function BasicStack(
   function handleAddCampus() {
     dispatch(openModal(true));
     dispatch(navigateRegisterInstitution(FormTypesNav.course));
-    router.push("/institution-register");
+    // router.push("/institution-register");
   }
 
   function handleClicked(key: string) {

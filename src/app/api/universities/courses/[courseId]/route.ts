@@ -2,8 +2,11 @@ import { db } from "@/lib/prisma";
 import { NextResponse } from "next/server";
 
 //GET GROUPS
-export async function GET(req: Request, context: { params: any }) {
-  const courseId = await context.params.courseId;
+export async function GET(
+  req: Request,
+  context: { params: Promise<{ courseId: string }> }
+) {
+  const { courseId } = await context.params;
   try {
     const course = await db.institutionCourse.findFirst({
       where: {
@@ -38,8 +41,11 @@ export async function GET(req: Request, context: { params: any }) {
 
 // CREATE GROUP
 
-export async function POST(request: Request, context: { params: any }) {
-  const courseId = await context.params.courseId;
+export async function POST(
+  request: Request,
+  context: { params: Promise<{ courseId: string }> }
+) {
+  const { courseId } = await context.params;
   const data = await request.json();
   try {
     const course = await db.institutionCourse.findFirst({

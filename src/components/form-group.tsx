@@ -15,7 +15,7 @@ function FormGroup() {
   const dispatch = useDispatch();
   const course = useAppSelector((state) => state.counter.course);
   const [submitting, setSubmitting] = useState(false);
-  console.log(course.id);
+
   const [yeargroup, setYearGroup] = useState("");
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
@@ -27,9 +27,9 @@ function FormGroup() {
       institutionCourseId: course.id,
       yeargroup,
     };
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    //@ts-ignore
     const { data } = await addGroupData(trGroup);
-
-    console.log(data);
 
     dispatch(addGroup(data));
     dispatch(navigateRegisterInstitution(FormTypesNav.unit));
@@ -41,7 +41,7 @@ function FormGroup() {
   }
 
   return (
-    <form className="formBody" onSubmit={handleSubmit}>
+    <form className="formBody w-full" onSubmit={handleSubmit}>
       <div className="formCardsContainer">
         <h2>Add your year of entry</h2>
         <div className="row100">

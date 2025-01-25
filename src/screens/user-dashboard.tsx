@@ -1,47 +1,30 @@
 import FavoritedByModal from "@/components/favorites/favoritedBy-modal";
 import FileList from "@/components/file-list";
+import { useAppSelector } from "@/hooks";
+import { RootState } from "@/store/store";
 import { FavoriteFile, FileTypeR, Student } from "@/types/prismatypes";
-// import { PieChart } from "@mui/x-charts/PieChart";
+import { useEffect, useState } from "react";
+
 import { PieChart } from "react-minimal-pie-chart";
+import { toast, Toaster } from "sonner";
 
 function calcPercentage(val: number, total: number) {
   const percentage = ((val / total) * 100).toFixed(1);
   return `${percentage}%`;
 }
 
-// function formatTimestamp(timestampString) {
-//   // Parse the timestamp string into a Date object
-//   const timestamp = new Date(timestampString);
-
-//   // Format the date using Intl.DateTimeFormat
-//   const formatter = new Intl.DateTimeFormat("en-US", {
-//     weekday: "short",
-//     month: "short",
-//     day: "numeric",
-//     year: "2-digit",
-//   });
-
-//   return formatter.format(timestamp);
-// }
-
-// function truncateText(text: string, maxLength: number) {
-//   if (text.length <= maxLength) {
-//     return text;
-//   } else {
-//     return text.substring(0, maxLength) + "...";
-//   }
-// }
-
 function UserDashboard({
   studentId,
   availableStorage,
-  userFavoritesFiles,
+  // userFavoritesFiles,
   studentFiles,
   handleShowModal,
   storage,
   freePlanAllocation,
+  groupId,
 }: {
   studentId: string;
+  groupId?: string;
   availableStorage: number;
   studentFiles: FileTypeR[];
   userFavoritesFiles: FavoriteFile[];
@@ -49,90 +32,140 @@ function UserDashboard({
   storage: number | null;
   freePlanAllocation: number | null;
 }) {
-  console.log("Userfav files", userFavoritesFiles);
+  const [isMobile, setIsMobile] = useState(false);
 
   const favoritedBys: { filename: string; favBys: Student[] }[] =
     studentFiles?.map((file) => ({
       filename: file.filename,
       favBys: file.favoritedBy,
     }));
-  console.log("User favoritedBys", favoritedBys);
+
+  const userFavoritesFiles = useAppSelector(
+    (state: RootState) => state.counter.favoriteFiles
+  );
+
+  useEffect(() => {
+    const handleResize = () => {
+      const isMobileDevice = window.innerWidth <= 900; // Adjust breakpoint as needed
+      if (isMobileDevice) {
+        setIsMobile(true);
+      } else {
+        setIsMobile(false);
+      }
+    };
+
+    // Initial check on mount
+    handleResize();
+
+    // Add event listener for window resize
+    window.addEventListener("resize", handleResize);
+
+    // Clean up event listener on unmount
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
 
   return (
     <div className="w-full">
-      <div className="storage-size">
-        <div className="flex justify-center items-center flex-col">
-          <PieChart
-            lengthAngle={-180}
-            reveal={100}
-            animate
-            data={[
-              {
-                title: "Remaining storage",
+      <div
+        className={`flex  ${isMobile ? "flex-wrap" : ""} items-center justify-between`}
+      >
+        <div className="storage-size">
+          <div className="flex justify-center items-center flex-col">
+            <PieChart
+              lengthAngle={-180}
+              // reveal={100}
 
-                value: availableStorage
-                  ? availableStorage
-                  : (freePlanAllocation ?? 1),
-                color: "#3c91e6 ",
-              },
-              { title: "storage-used", value: storage ?? 0, color: "red" },
-            ]}
-          />
+              startAngle={0}
+              animate
+              data={[
+                {
+                  title: "Remaining storage",
 
-          <div className="pie-details">
-            <div className="available">
-              <div className="box bg-[#3c91e6]"></div>
-              <span>
-                Available Space: &nbsp;
-                {availableStorage?.toFixed(2)}
-                MB
-              </span>
+                  value: availableStorage
+                    ? availableStorage
+                    : (freePlanAllocation ?? 1),
+                  color: "#3c91e6 ",
+                },
+                { title: "storage-used", value: storage ?? 0, color: "red" },
+              ]}
+            />
+
+            <div className="pie-details">
+              <div className="available">
+                <div className="box bg-[#3c91e6]"></div>
+                <span className="wrapper-span">
+                  Available Space: &nbsp;
+                  {availableStorage?.toFixed(2)}
+                  MB
+                </span>
+              </div>
+              <div className="used">
+                <div className="box usedSpace"></div>
+                <span className="wrapper-span">
+                  Used Space:&nbsp;{storage?.toFixed(2) ?? 0}MB
+                </span>
+                ||
+                {freePlanAllocation && storage && (
+                  <span>{calcPercentage(storage, freePlanAllocation)}</span>
+                )}
+              </div>
+              <div className="mt-3 mb-5">
+                <span className="font-bold allocation-space">
+                  Allocated Space:&nbsp;
+                  <span className="text-blue-500 ">{freePlanAllocation}</span>
+                  MB
+                </span>
+              </div>
+              <div className="w-full">
+                <button
+                  onClick={() => {
+                    toast.info(
+                      "Thank you for your prompt, please note this application is still in test mode"
+                    );
+                  }}
+                  className="action-button animatedBlock"
+                >
+                  <div className="animatedText">Buy storage</div>
+                </button>
+              </div>
             </div>
-            <div className="used">
-              <div className="box usedSpace"></div>
-              <span>Used Space:&nbsp;{storage?.toFixed(2) ?? 0}MB</span> ||
-              {freePlanAllocation && storage && (
-                <span>{calcPercentage(storage, freePlanAllocation)}</span>
-              )}
-            </div>
-            <div className="mt-3 mb-5">
-              <span className="font-bold ">
-                Allocated Space:&nbsp;
-                <span className="text-blue-500 ">{freePlanAllocation}</span>
-                MB
-              </span>
-            </div>
-            <div className="w-full">
-              <button className="action-button animatedBlock">
-                <div className="animatedText">Buy storage</div>
-              </button>
+          </div>
+        </div>
+        <div className="storage-size">
+          <div className="flex justify-center items-center flex-col mt-6">
+            <PieChart
+              lengthAngle={-180}
+              reveal={100}
+              animate
+              data={[
+                { title: "Remaining Tokens", value: 10, color: "#3c91e6 " },
+                { title: "Tokens Used", value: 20, color: "red" },
+              ]}
+            />
+            {/* <span className="text-white">Currently hibernated</span> */}
+
+            <div className="pie-details">
+              <div>Available Tokens 0</div>
+              <div>Used tokens 0</div>
+              <div>Allocated 0</div>
+              <div className="w-full">
+                <button
+                  onClick={() =>
+                    toast.info(
+                      `Thank you for your prompt,this service is still under development`
+                    )
+                  }
+                  className="action-button"
+                >
+                  Buy Tokens
+                </button>
+              </div>
             </div>
           </div>
         </div>
       </div>
-      <div className="storage-size">
-        <div className="flex justify-center items-center flex-col mt-6">
-          <PieChart
-            lengthAngle={-180}
-            reveal={100}
-            animate
-            data={[
-              { title: "Remaining storage", value: 10, color: "#3c91e6 " },
-              { title: "storage-used", value: 20, color: "red" },
-            ]}
-          />
-
-          <div className="pie-details">
-            <div>Available Tokens 20tkns</div>
-            <div>Used tokens 203</div>
-            <div>Allocated 5260</div>
-            <div className="w-full">
-              <button className="action-button">Buy Tokens</button>
-            </div>
-          </div>
-        </div>
-      </div>
-
       <div>
         <div className="w-full stats-box mt-4 mb-4">
           <h1 className="stats-title">Stats</h1>
@@ -144,7 +177,10 @@ function UserDashboard({
           </div>
           <div className="total-favorites nowrap-class">
             {/* Fans Favorite: Position <span className="number-files">1</span>/34 */}
-            <FavoritedByModal favoritedBys={favoritedBys} />
+            <FavoritedByModal
+              studentId={studentId}
+              favoritedBys={favoritedBys}
+            />
           </div>
         </div>
         <div className="mt-5">
@@ -161,16 +197,27 @@ function UserDashboard({
                     studentId={studentId}
                     favoriteFiles={userFavoritesFiles}
                     item={item}
+                    groupId={groupId || ""}
                     uploader={uploader}
                     handleShowModal={handleShowModal}
                     key={item.id}
                   />
                 );
               })}
+
+              {userFavoritesFiles.length === 0 && (
+                <div
+                  style={{ color: "#7e22ce" }}
+                  className="text-border text-xl text-purple-700"
+                >
+                  Oops!, nothing here yet
+                </div>
+              )}
             </ul>
           </div>
         </div>
       </div>
+      <Toaster richColors />
     </div>
   );
 }

@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { new_user } from "../assets";
 
-const ServerMessage = ({ content }) => {
+const ServerMessage = ({ content }: { content: string }) => {
   return (
     <p className="px-1 md:px-6 py-1 flex">
       <span className="text-xl md:text-3xl text-white flex bg-transparent">

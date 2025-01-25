@@ -1,11 +1,10 @@
 "use client";
-import { useRouter } from "next/navigation";
-import React, { ChangeEvent, useState } from "react";
-import { useDispatch } from "react-redux";
-import SubmitButton from "./submit-button";
 import { useAddUnitsMutation, useConnectStudentMutation } from "@/rtk";
 import { Unit } from "@/types/prismatypes";
-import BasicModal from "./material-ui/modal";
+import { useRouter } from "next/navigation";
+import React, { ChangeEvent, useState } from "react";
+import SubmitButton from "./submit-button";
+// import BasicModal from "./material-ui/modal";
 import { useAppSelector } from "@/hooks";
 
 let allUnits: { [x: string]: string } | undefined = {};
@@ -14,15 +13,14 @@ function FormUnit() {
   const router = useRouter();
 
   const [connectStudent] = useConnectStudentMutation();
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
   const [addUnitsData] = useAddUnitsMutation();
 
-  const [openModal, setOpenModal] = useState(false);
+  // const [openModal, setOpenModal] = useState(false);
 
   const [submitting, setSubmitting] = useState(false);
 
   const group = useAppSelector((state) => state.counter.group);
-  console.log(group.id);
   const inputs = [];
   const numberofUnits: number[] = [];
 
@@ -46,7 +44,7 @@ function FormUnit() {
 
     if (!units) return;
 
-    const groupId = group?.id;
+    const groupId = group?.id || localStorage.getItem("groupId");
     if (!groupId) return alert("group id not found, please use one group");
 
     const registeredUnits = Object.values(unit!);
@@ -56,18 +54,19 @@ function FormUnit() {
       unitname: unt,
     }));
 
-    const { data: ourUnits } = await addUnitsData(trUnits);
+    await addUnitsData(trUnits);
 
     const studentStr = localStorage.getItem("newstudent");
     if (!studentStr) return alert("no student found");
     const student = JSON.parse(studentStr);
     const { data: groupf } = await connectStudent({ student, groupId });
-    console.log(groupf);
 
     if (!groupf) return alert("group ERROR");
 
+    localStorage.removeItem("newstudent");
+    localStorage.removeItem("groupId");
+
     router.push(`/dashboard/${student.id}`);
-    setSubmitting(false);
   }
   function handleTextChange(e: ChangeEvent<HTMLInputElement>) {
     const value = e.target.value;
@@ -128,7 +127,6 @@ function FormUnit() {
           </div>
         </div>
         <div className="row100">{inputs.length !== 0 && inputs}</div>
-
         <div className="row100">
           {/* <BasicModal
             unit={true}

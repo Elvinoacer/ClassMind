@@ -30,7 +30,13 @@ function PdfChatScreen({ name }: { name: string }) {
         <p className="text-center">Regards</p>
         <p className="text-center mt-1 italic">e.o</p>
         <p className="text-center">
-          Elvin <Link href="tel:+254792156094">+254792156094</Link>
+          Elvin{" "}
+          <Link
+            href="tel:254792156094"
+            className="ml-2 text-blue-500 underline italic"
+          >
+            +254792156094
+          </Link>
         </p>
       </div>
     </div>

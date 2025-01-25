@@ -1,5 +1,4 @@
 import {
-  File,
   InstitutionCourse,
   InstitutionGroup,
   Student,
@@ -26,6 +25,9 @@ export const pokemonApi = createApi({
     }),
     getGroupUnits: builder.query({
       query: (query) => `universities/groups/${query}/unit`,
+    }),
+    getMessages: builder.query({
+      query: (query: string) => `universities/chats/${query}`,
     }),
     addUniversity: builder.mutation({
       query: (query) => ({
@@ -72,7 +74,14 @@ export const pokemonApi = createApi({
     }),
     addUnits: builder.mutation({
       query: (query: Unit[]) => ({
-        url: `universities/groups/${query[0].institutionGroupId}/units`,
+        url: `universities/groups/${query[0]?.institutionGroupId}/units`,
+        body: query,
+        method: "POST",
+      }),
+    }),
+    addUnit: builder.mutation({
+      query: (query: Unit) => ({
+        url: `universities/groups/${query?.institutionGroupId}/units`,
         body: query,
         method: "POST",
       }),
@@ -116,9 +125,11 @@ export const {
   useGetUniversityQuery,
   useAddCourseMutation,
   useAddYearGroupMutation,
+  useAddUnitMutation,
   useAddUnitsMutation,
   useGetStudentDetailsQuery,
   useGetGroupUnitsQuery,
+  useGetMessagesQuery,
   useAddFileMutation,
   useAddDBFileMutation,
   useFavFileMutation,

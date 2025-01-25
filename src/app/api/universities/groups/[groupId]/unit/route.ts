@@ -2,7 +2,10 @@ import { db } from "@/lib/prisma";
 import { NextResponse } from "next/server";
 
 //get all the units and files
-export async function GET(req: Request, context: { params: any }) {
+export async function GET(
+  req: Request,
+  context: { params: Promise<{ groupId: string }> }
+) {
   const { groupId } = await context.params;
 
   try {
@@ -33,7 +36,10 @@ export async function GET(req: Request, context: { params: any }) {
 }
 
 //create units
-export async function POST(req: Request, context: { params: any }) {
+export async function POST(
+  req: Request,
+  context: { params: Promise<{ groupId: string }> }
+) {
   try {
     const data = await req.json();
     const { groupId } = await context.params;
@@ -63,7 +69,10 @@ export async function POST(req: Request, context: { params: any }) {
 
 // delete unit
 
-export async function DELETE(req: Request, context: { params: any }) {
+export async function DELETE(
+  req: Request,
+  context: { params: Promise<{ groupId: string }> }
+) {
   const { unitId } = await req.json();
   const { groupId } = await context.params;
   try {

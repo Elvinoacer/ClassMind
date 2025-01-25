@@ -9,7 +9,8 @@ const data = [
 ];
 
 const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042"];
-
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+//@ts-ignore
 const renderActiveShape = (props) => {
   const RADIAN = Math.PI / 180;
   const {

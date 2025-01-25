@@ -1,8 +1,5 @@
 "use client";
-import {
-  setUploadOption,
-  uploadOptionType,
-} from "@/store/features/counterslice";
+import { uploadOptionType } from "@/store/features/counterslice";
 import PersonIcon from "@mui/icons-material/Person";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
@@ -14,9 +11,7 @@ import ListItemAvatar from "@mui/material/ListItemAvatar";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemText from "@mui/material/ListItemText";
 import { blue } from "@mui/material/colors";
-import * as React from "react";
 import { FiUploadCloud } from "react-icons/fi";
-import { useDispatch } from "react-redux";
 
 const options: uploadOptionType[] = ["class-store", "my-store"];
 
@@ -30,11 +25,15 @@ export function SimpleDialog(props: SimpleDialogProps) {
   const { onClose, selectedValue, open } = props;
 
   const handleClose = () => {
-    onClose(selectedValue);
+    if (selectedValue && onClose) {
+      onClose(selectedValue);
+    }
   };
 
   const handleListItemClick = (value: uploadOptionType) => {
-    onClose(value);
+    if (onClose) {
+      onClose(value);
+    }
   };
 
   return (
@@ -60,38 +59,34 @@ export function SimpleDialog(props: SimpleDialogProps) {
   );
 }
 
-export default function SimpleDialogDemo({
-  handleSelectedVal,
-}: {
+export default function SimpleDialogDemo({}: {
   handleSelectedVal?: () => void;
 }) {
-  const dispatch = useDispatch();
-  const [open, setOpen] = React.useState(false);
-  const [selectedValue, setSelectedValue] = React.useState(options[0]);
+  // const dispatch = useDispatch();
+  // const [open, setOpen] = React.useState(false);
+  // const [selectedValue, setSelectedValue] = React.useState(options[0]);
 
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
+  // const handleClickOpen = () => {
+  //   setOpen(true);
+  // };
 
-  const handleClose = (value: uploadOptionType) => {
-    console.log("UPLOAD OPTIONS", value);
-    setSelectedValue(value);
-    setOpen(false);
+  // const handleClose = (value: uploadOptionType) => {
 
-    console.log(value);
+  //   setSelectedValue(value);
+  //   setOpen(false);
 
-    if (handleSelectedVal) {
-      handleSelectedVal();
-    }
+  //   if (handleSelectedVal) {
+  //     handleSelectedVal();
+  //   }
 
-    dispatch(setUploadOption(value));
-    console.log(value);
-  };
+  //   dispatch(setUploadOption(value));
+
+  // };
 
   return (
     <div className="w-full flex items-center justify-center">
       <div>
-        <Button variant="text" className="gap-2" onClick={handleClickOpen}>
+        <Button variant="text" className="gap-2" onClick={() => {}}>
           <FiUploadCloud color="white" />
           <span className="text-white font-bold">Upload</span>
         </Button>

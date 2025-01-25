@@ -1,7 +1,7 @@
 "use client";
 import { useGetUniversityQuery } from "@/rtk";
 import { navigateRegisterInstitution } from "@/store/features/counterslice";
-import { FormTypesNav } from "@/types/prismatypes";
+import { FormTypesNav, InstitutionType } from "@/types/prismatypes";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
@@ -9,7 +9,7 @@ import { useDispatch } from "react-redux";
 function UniversityDetails({ uniId }: { uniId: string }) {
   const dispatch = useDispatch();
   const router = useRouter();
-  const [university, setUniversity] = useState();
+  const [university, setUniversity] = useState<null | InstitutionType>(null);
   const { data } = useGetUniversityQuery(uniId);
 
   useEffect(() => {
@@ -29,24 +29,18 @@ function UniversityDetails({ uniId }: { uniId: string }) {
         Courses
       </div>
       <div className="items-center w-full flex justify-center h-[100vh] ">
-        {university && university.courses.length <= 0 && (
+        {university && university!.courses!.length <= 0 && (
           <div className="mt-6 mb-10 flex w-full items-center justify-center">
             <div className="font-bold text-2xl w-[100vw] flex items-center justify-center">
               No courses yet, would you like to add
             </div>
-            {/* <button
-              onClick={handleAddCourseNav}
-              className="bg-blue-500 px-4 py-2 rounded-full text-white mt-5"
-            >
-              Add Course
-            </button> */}
           </div>
         )}
 
         <div className="flex w-full items-center justify-center h-full">
           {university &&
-            university.courses.length > 0 &&
-            university.courses.map((course) => (
+            university!.courses!.length > 0 &&
+            university!.courses!.map((course) => (
               <div
                 onClick={handleNavigateGroup}
                 key={course.coursename}

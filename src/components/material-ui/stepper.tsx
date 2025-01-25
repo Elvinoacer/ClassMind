@@ -30,9 +30,9 @@ export default function HorizontalLinearStepper({
   const dispatch = useDispatch();
   // const [groupId, setGroupId] = React.useState<string | null>(null);
   const [activeStep, setActiveStep] = React.useState(0);
-  async function handleRedirect() {
-    // router.push("/dashboard");
-  }
+  // async function handleRedirect() {
+  //   // router.push("/dashboard");
+  // }
 
   const handleNext = async () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
@@ -47,7 +47,6 @@ export default function HorizontalLinearStepper({
       if (!studentStr) return alert("NO studet found");
       const student = JSON.parse(studentStr);
       const { data: groupf } = await connectStudent({ student, groupId });
-      console.log(groupf);
 
       if (!groupf) return alert("group ERROR");
 
@@ -65,7 +64,7 @@ export default function HorizontalLinearStepper({
   return (
     <Box sx={{ width: "100%" }}>
       <Stepper activeStep={activeStep}>
-        {steps.map((label, index) => {
+        {steps.map((label) => {
           const stepProps: { completed?: boolean } = {};
           const labelProps: {
             optional?: React.ReactNode;

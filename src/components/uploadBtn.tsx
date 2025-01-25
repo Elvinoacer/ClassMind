@@ -1,6 +1,6 @@
 import { useAddDBFileMutation, useAddFileMutation } from "@/rtk";
-import { addPDF } from "@/store/features/counterslice";
-import { DBdataType, FileType } from "@/types/prismatypes";
+import { addDBFile, addPDF } from "@/store/features/counterslice";
+import { FileType } from "@/types/prismatypes";
 import { Button } from "@mui/material";
 import React, { useRef } from "react";
 import { FiUploadCloud } from "react-icons/fi";
@@ -10,7 +10,7 @@ import { toast } from "sonner";
 function UploadBtn({
   studentId,
   availableStorage,
-  addJustUploadedFile,
+
   filesArr,
   unitId,
   groupId,
@@ -20,7 +20,6 @@ function UploadBtn({
   filesArr: FileType[];
   availableStorage: number;
   studentId?: string;
-  addJustUploadedFile: (val: DBdataType) => void;
 }) {
   const inputREf = useRef<HTMLInputElement | null>(null);
   const dispatch = useDispatch();
@@ -29,22 +28,23 @@ function UploadBtn({
   function addPdfHandlerChange(e: React.ChangeEvent<HTMLInputElement>) {
     // const files = e.target.files;
 
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    //@ts-ignore
     const files = Array.from(e.target.files);
     // Now you have an array of File objects named 'files'
-    // console.log(files);
+
     // Example: Process each file (e.g., display file names)
     // files.forEach((file) => {
-    //   console.log(file);
+
     // });
 
-    // console.log(files);
     // return;
     try {
       if (!files) return;
       // const file = files[0];
       files.forEach((file) => {
         dispatch(addPDF(URL.createObjectURL(file)));
-        console.log(file);
+
         const filename = file.name.split(".")[0];
         if (availableStorage < 1) {
           toast.warning("Not enough storage available");
@@ -61,17 +61,13 @@ function UploadBtn({
         const fileSize = file.size / 1000;
         const filesize =
           fileSize < 1024 ? `${fileSize} KB` : `${fileSize / 1000} MB`;
-        const filesizeStr = `${filename}  ${filesize}`;
-        console.log(`File size: ${filesizeStr}`);
-
-        console.log(`THIS IS THE FILE  ${file}`);
+        // const filesizeStr = `${filename}  ${filesize}`;
 
         async function addFileToDb() {
           const formData = new FormData();
           formData.append("file", file);
 
           const { data: awsData } = await addFile(formData);
-          console.log(`awsData : ${awsData}`);
 
           const fileSizeArr = filesize.split(" ");
           const fileSize = +fileSizeArr[0];
@@ -81,7 +77,6 @@ function UploadBtn({
           } else {
             fileSizeStorage = fileSize;
           }
-          console.log("fileSizeStorage", fileSizeStorage);
 
           const { data: DBdata } = await addDbFile({
             filename,
@@ -93,15 +88,13 @@ function UploadBtn({
             url: awsData.url,
           });
 
-          console.log(`DBDATA ${JSON.stringify(DBdata)}`);
+          dispatch(addDBFile(DBdata));
           toast.success(`File uploaded successfully`);
-          addJustUploadedFile(DBdata);
         }
         addFileToDb();
-        console.log(URL.createObjectURL(file));
       });
     } catch (error) {
-      consle.log(error);
+      console.error("Error adding file to db", error);
       toast.error("An error occurred");
     }
   }

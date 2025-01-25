@@ -4,16 +4,22 @@ import { navigateSideBar } from "@/store/features/counterslice";
 import { SideBar as SideBarEn } from "@/types/prismatypes";
 import { useState } from "react";
 import { AiOutlineLogout } from "react-icons/ai";
-import peopleImg from "../assets/people.png";
 
+import { useAppSelector } from "@/hooks";
+import { LogoutLink } from "@kinde-oss/kinde-auth-nextjs/components";
 import Image from "next/image";
-import { RiCommunityFill, RiRobot2Fill, RiUser2Fill } from "react-icons/ri";
+import { RiCommunityFill, RiRobot2Fill } from "react-icons/ri";
 import { RxDashboard } from "react-icons/rx";
 import { SiGoogleclassroom } from "react-icons/si";
 import { useDispatch } from "react-redux";
-import { useAppSelector } from "@/hooks";
 
-function SideBar({ toggleModal }: { toggleModal?: () => void }) {
+function SideBar({
+  toggleModal,
+  picture,
+}: {
+  picture: string;
+  toggleModal?: () => void;
+}) {
   const dispatch = useDispatch();
   const sideBarNav = useAppSelector((state) => state.counter.navSideBar);
   const toggleMenu = useAppSelector((state) => state.counter.toggleMenu);
@@ -38,7 +44,15 @@ function SideBar({ toggleModal }: { toggleModal?: () => void }) {
     <section id="sidebar" className={`${toggleMenu ? "hide" : ""}`}>
       {/* // <!-- SIDEBAR --> */}
       <span className="profile">
-        <Image className="" src={peopleImg} alt="people" />
+        {picture && (
+          <Image
+            className=""
+            width={40}
+            height={40}
+            src={picture}
+            alt="people"
+          />
+        )}
       </span>
       <a href="#" className="brand">
         <i className="bx bxs-smile"></i>
@@ -140,12 +154,14 @@ function SideBar({ toggleModal }: { toggleModal?: () => void }) {
             }
           }}
         >
-          <a href="#" className="logout">
+          <LogoutLink postLogoutRedirectURL="/login" className="logout">
+            {/* <a href="#" > */}
             <i className="bx bxs-log-out-circle">
               <AiOutlineLogout />
             </i>
             <span className="text">Logout</span>
-          </a>
+            {/* </a> */}
+          </LogoutLink>
         </li>
       </ul>
     </section>

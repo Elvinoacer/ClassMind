@@ -2,9 +2,12 @@ import { db } from "@/lib/prisma";
 import { NextResponse } from "next/server";
 
 //get university + courses
-export async function GET(req: Request, context: { params: any }) {
+export async function GET(
+  req: Request,
+  context: { params: Promise<{ uniid: string }> }
+) {
   const { uniid } = await context.params;
-  console.log(uniid);
+
   try {
     const university = await db.institution.findUnique({
       where: {
@@ -42,7 +45,10 @@ export async function GET(req: Request, context: { params: any }) {
 }
 
 //CREATE COURSE
-export async function POST(req: Request, context: { params: any }) {
+export async function POST(
+  req: Request,
+  context: { params: Promise<{ uniid: string }> }
+) {
   const { uniid } = await context.params;
   const data = await req.json();
   try {
@@ -78,7 +84,10 @@ export async function POST(req: Request, context: { params: any }) {
   }
 }
 
-export async function PATCH(req: Request, context: { params: any }) {
+export async function PATCH(
+  req: Request,
+  context: { params: Promise<{ uniid: string }> }
+) {
   const { uniid } = await context.params;
   const { campusname } = await req.json();
 

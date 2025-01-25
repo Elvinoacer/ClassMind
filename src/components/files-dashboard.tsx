@@ -1,20 +1,18 @@
-import { DBdataType, FileType, Unit } from "@/types/prismatypes";
-import { useCallback, useLayoutEffect, useState } from "react";
+import { useAppSelector } from "@/hooks";
+import { RootState } from "@/store/store";
+import { FileType, Unit } from "@/types/prismatypes";
 import FileList from "./file-list";
 import UploadBtn from "./uploadBtn";
 
 function FilesDashboard({
   studentId,
-  favoriteFiles,
   availableStorage,
   groupId,
   handleShowModal,
-  unit,
-  files,
   mystore,
 }: {
   studentId?: string;
-  favoriteFiles: FileType[];
+
   availableStorage?: number;
   groupId: string;
   handleShowModal?: (value: string) => void;
@@ -22,31 +20,23 @@ function FilesDashboard({
   files?: FileType[];
   mystore?: boolean;
 }) {
-  const [filesArr, setFiles] = useState<FileType[] | undefined | DBdataType>(
-    files ?? []
+  const units = useAppSelector((state: RootState) => state.counter.DBUnits);
+  const indexFileNav = useAppSelector(
+    (state: RootState) => state.counter.indexFileNav
   );
-
+  const unit = indexFileNav !== undefined && units ? units[indexFileNav] : null;
   // const [justUploadedFiles, setJustUploadedFiles] = useState<DBdataType[]>([]);
-
-  // console.log("justUploadedFiles", justUploadedFiles);
-
-  const addJustUploadedFile = useCallback(
-    (val: DBdataType) => {
-      if (filesArr !== undefined) {
-        setFiles((prev) => [...prev, val]);
-      }
-    },
-    [filesArr]
+  const favoriteFiles = useAppSelector(
+    (state: RootState) => state.counter.favoriteFiles
   );
 
-  useLayoutEffect(() => {
-    if (unit) {
-      // settings to undefined
-      setFiles(unit.files);
+  // useLayoutEffect(() => {
+  //   if (unit) {
+  //     // settings to undefined
+  //     setFiles(unit.files);
 
-      console.log("These are your files", unit.files);
-    }
-  }, [unit]);
+  //   }
+  // }, [unit]);
 
   return (
     <div className="todo h-full w-full">
@@ -55,9 +45,11 @@ function FilesDashboard({
       </div>
       <div className="bg-gray-600 w-full h-[0.2px] "></div>
       <ul className="todo-list mt-3">
-        {filesArr &&
+        {unit?.files &&
           // (justUploadedFiles.length !== 0
-          filesArr.map((item) => {
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          //@ts-ignore
+          unit?.files.map((item) => {
             const uploader =
               item?.studentId === studentId
                 ? "You"
@@ -66,23 +58,31 @@ function FilesDashboard({
             return (
               <FileList
                 favoriteFiles={favoriteFiles}
+                unitId={unit?.id}
                 studentId={studentId ?? ""}
                 item={item}
+                groupId={groupId}
                 uploader={uploader}
                 handleShowModal={handleShowModal}
                 key={item.id}
               />
             );
           })}
-        {filesArr && filesArr.length === 0 && <div>Oops, nothing here yet</div>}
+
+        {unit?.files &&
+          Array.isArray(unit?.files) &&
+          unit?.files?.length === 0 && <div>Oops, nothing here yet</div>}
       </ul>
       <div className="bg-[#3c91e6] mt-7 px-4 py-2 rounded-full font-semibold">
         <UploadBtn
-          addJustUploadedFile={addJustUploadedFile}
           studentId={studentId}
           groupId={groupId}
           unitId={unit?.id}
-          filesArr={filesArr}
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          //@ts-ignore
+          filesArr={unit?.files}
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          //@ts-ignore
           availableStorage={availableStorage}
         />
       </div>

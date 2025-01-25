@@ -1,26 +1,14 @@
-"use client";
+import {
+  LoginLink,
+  RegisterLink,
+} from "@kinde-oss/kinde-auth-nextjs/components";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
 import { FaFacebook } from "react-icons/fa";
 import { FaInstagram, FaXTwitter } from "react-icons/fa6";
-import { ImPinterest2 } from "react-icons/im";
+import { RiWhatsappFill } from "react-icons/ri";
 import headerimg from "../assets/header.jpg";
-import CircularColor from "@/components/material-ui/circular-progress";
-import { useState } from "react";
-import BasicModal from "@/components/material-ui/modal";
 
 function LandingPage() {
-  const [isClicked, setIsClicked] = useState(false);
-  const router = useRouter();
-  function handleAuth() {
-    // after we get the user
-    setIsClicked(true);
-    // router.push("/institutions");
-
-    //if the user already exist redirect to dashboard
-    // router.push("/dashboard")
-  }
-
   return (
     <>
       <nav>
@@ -28,53 +16,18 @@ function LandingPage() {
           <div>C</div>
           ClassMind
         </div>
-        <ul className="nav__socials">
-          <li>
-            <a href="https://x.com/Elvinoace" target="_blank">
-              <FaXTwitter />
-            </a>
-          </li>
-          <li>
-            <a
-              href="https://www.facebook.com/profile.php?id=100092661322616"
-              target="_blank"
-            >
-              <FaFacebook />
-            </a>
-          </li>
-          <li>
-            <a href="https://pin.it/7w11yxFNr" target="_blank">
-              <ImPinterest2 />
-            </a>
-          </li>
-          <li>
-            <a href="https://www.instagram.com/elvinomondi/" target="_blank">
-              <FaInstagram />
-            </a>
-          </li>
-        </ul>
-        <div className="nav__contact">
-          <div className="nav__contact__card">
-            <span>
-              <i className="ri-phone-line"></i>
-            </span>
-            <div className="border-[0.5px] px-4 py-8 rounded-full">
-              <h4>
-                <a href="tel:+254792156094">Quick Call</a>
-              </h4>
-            </div>
-          </div>
-          <div className="nav__contact__card">
-            <span>
-              <i className="ri-mail-line"></i>
-            </span>
-            <div className="">
-              <h4>
-                <a href="mailto:omondielvin@gmail.com">Send an Email</a>
-              </h4>
-            </div>
-          </div>
-        </div>
+        <LoginLink
+          postLoginRedirectURL="/redirect"
+          style={{
+            backgroundColor: "#6EB0EC",
+            color: "white",
+            padding: "5px 10px",
+            borderRadius: 30,
+            fontWeight: "bold",
+          }}
+        >
+          Login
+        </LoginLink>
       </nav>
       <header className="header__container">
         <div className="header__image">
@@ -91,11 +44,75 @@ function LandingPage() {
             life. Organize your work effortlessly, access your files instantly,
             and preserve your academic journey for years to come.
           </p>
-          {/* <LoginLink postLoginRedirectURL="/"> */}
-          {<BasicModal openModal={isClicked} />}
-
-          {/* </LoginLink> */}
+          <RegisterLink
+            style={{
+              backgroundColor: "#6EB0EC",
+              color: "white",
+              padding: "15px 30px",
+              borderRadius: 30,
+              fontWeight: "bold",
+            }}
+            postLoginRedirectURL="/redirect"
+          >
+            Get Started
+          </RegisterLink>
         </div>
+
+        <section>
+          <ul className="nav__socials">
+            <li>
+              <a href="https://x.com/Elvinoace" target="_blank">
+                <FaXTwitter />
+              </a>
+            </li>
+            <li>
+              <a
+                href="https://www.facebook.com/profile.php?id=100092661322616"
+                target="_blank"
+              >
+                <FaFacebook />
+              </a>
+            </li>
+            <li>
+              <a href="https://wa.me/254792156094" target="_blank">
+                <RiWhatsappFill />
+              </a>
+            </li>
+            <li>
+              <a href="https://www.instagram.com/elvinomondi/" target="_blank">
+                <FaInstagram />
+              </a>
+            </li>
+
+            <li className="nav__contact">
+              <div className="nav__contact__card">
+                <span>
+                  <i className="ri-phone-line"></i>
+                </span>
+                <div className="border-[0.5px] px-4  rounded-full">
+                  <h4>
+                    <a
+                      className="call-text text-gray-500"
+                      href="tel:+254792156094"
+                    >
+                      Quick Call
+                    </a>
+                  </h4>
+                </div>
+              </div>
+              <div className="nav__contact__card">
+                <span>
+                  <i className="ri-mail-line"></i>
+                </span>
+                <div className="">
+                  <h4>
+                    <a href="mailto:omondielvin@gmail.com">Email</a>
+                  </h4>
+                </div>
+              </div>
+            </li>
+          </ul>
+        </section>
       </header>
     </>
   );

@@ -28,7 +28,7 @@ export default function CoursesList({
 }) {
   const dispatch = useDispatch();
   const router = useRouter();
-  const [transition, setTransition] = React.useState(false);
+  // const [transition, setTransition] = React.useState(false);
 
   const [clickedKey, setClickedKey] = React.useState("");
   const uniSelection = useAppSelector(
@@ -40,7 +40,7 @@ export default function CoursesList({
   }
 
   function handleAddCourse() {
-    setTransition(true);
+    // setTransition(true);
 
     dispatch(navigateRegisterInstitution(FormTypesNav.course));
     router.push("/institution-register");
@@ -65,6 +65,8 @@ export default function CoursesList({
             onClick={() => {
               handleClicked(course.id);
               dispatch(
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                //@ts-ignore
                 addCourse({
                   id: course.id,
 
@@ -92,6 +94,11 @@ export default function CoursesList({
           <div className="w-full h-[0.5px] bg-gray-500 opacity-45 mt-3 mb-3"></div>
         </div>
       ))}
+      <div className="mt-8 w-full" onClick={handleAddCourse}>
+        <li className="bg-blue-400 hover:scale-105 transition-all cursor-pointer rounded-full text-center py-3">
+          <div className="font-bold text-2xl text-white">Add Course?</div>
+        </li>
+      </div>
     </List>
   );
 }

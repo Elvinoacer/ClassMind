@@ -29,8 +29,8 @@ const style = {
 };
 
 export default function BasicModal({
-  btnText,
-  groupId,
+  // btnText,
+  // groupId,
   campus,
   uniId,
 }: {
@@ -67,7 +67,7 @@ export default function BasicModal({
     if (campus) {
       dispatch(navigateRegisterInstitution(FormTypesNav.course));
       const { data } = await addCampusData({ campusname, uniid: uniId });
-      console.log(data);
+
       dispatch(addInstitution(data));
 
       redirect("/institution-register");
@@ -79,7 +79,7 @@ export default function BasicModal({
       firstname: studentName,
       email: studentEmail,
     });
-    console.log(data);
+
     if (data?.exist && data.student.InstitutionGroup?.id) {
       router.push(`/dashboard/${data.student.id}`);
     } else {
@@ -91,12 +91,11 @@ export default function BasicModal({
 
   function handleDataSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    const studentDetails = {
-      email: studentEmail,
-      firstname: studentName,
-    };
+    // const studentDetails = {
+    //   email: studentEmail,
+    //   firstname: studentName,
+    // };
 
-    console.log(studentDetails);
     // get the relevant selections
 
     // validate existence

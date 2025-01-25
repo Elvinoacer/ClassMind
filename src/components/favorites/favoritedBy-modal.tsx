@@ -1,17 +1,18 @@
 "use client";
 
-import Image from "next/image";
-import React, { useRef } from "react";
-import { MdClose } from "react-icons/md";
-import { IoStar } from "react-icons/io5";
-import image1 from "@/assets/img/star-trophy.png";
 import image2 from "@/assets/img/trophy_processed.jpg";
 import { Student } from "@/types/prismatypes";
+import Image from "next/image";
+import { useRef } from "react";
+import { IoStar } from "react-icons/io5";
+import { MdClose } from "react-icons/md";
 import FavoritedList from "./favorited-list";
 
 function FavoritedByModal({
   favoritedBys,
+  studentId,
 }: {
+  studentId: string;
   favoritedBys: { filename: string; favBys: Student[] }[];
 }) {
   const modalContainer = useRef<HTMLDivElement | null>(null);
@@ -69,7 +70,7 @@ function FavoritedByModal({
           </div>
 
           <div className="list-fav">
-            <FavoritedList favoritedBys={favoritedBys} />
+            <FavoritedList studentId={studentId} favoritedBys={favoritedBys} />
           </div>
 
           <button

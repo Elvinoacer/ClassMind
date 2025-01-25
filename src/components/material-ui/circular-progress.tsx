@@ -19,7 +19,11 @@ export default function CircularColor({
 }) {
   return (
     <Stack sx={{ color: "grey.500" }} spacing={2} direction="row">
-      <CircularProgress color={color ?? "secondary"} size={size} />
+      <CircularProgress
+        className="border-none"
+        color={color ?? "secondary"}
+        size={size}
+      />
       {/* <CircularProgress color="success" /> */}
       {/* <CircularProgress color="inherit" size={size} /> */}
     </Stack>

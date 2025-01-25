@@ -1,22 +1,19 @@
 "use client";
-import React, { forwardRef, Ref, useImperativeHandle, useState } from "react";
+import React, { useState } from "react";
 import EmptySelection from "./empty-selection";
 
-import { useDispatch } from "react-redux";
 import {
   addGroup,
   addGroupId,
   navigateRegisterInstitution,
-  setNoNextAllow,
-  setUniSelectionIndex,
 } from "@/store/features/counterslice";
 import { FormTypesNav } from "@/types/prismatypes";
 import { useRouter } from "next/navigation";
-import { useAppSelector } from "@/hooks";
+import { useDispatch } from "react-redux";
 
-interface GroupListRef {
-  groupId: string;
-}
+// interface GroupListRef {
+//   groupId: string;
+// }
 interface GroupListProps {
   groups:
     | {
@@ -29,12 +26,12 @@ interface GroupListProps {
     | [];
 }
 
-function GroupList({ groups }: GroupListProps, ref: Ref<GroupListRef>) {
+function GroupList({ groups }: GroupListProps) {
   const dispatch = useDispatch();
   const navigation = useRouter();
-  const uniSelection = useAppSelector(
-    (state) => state.counter.uniSelectionIndex
-  );
+  // const uniSelection = useAppSelector(
+  //   (state) => state.counter.uniSelectionIndex
+  // );
   const [clickedKey, setClicked] = useState<string>("");
   // dispatch(setUniSelectionIndex({ index: uniSelection.index + 1, id: "" }));
 
@@ -66,6 +63,8 @@ function GroupList({ groups }: GroupListProps, ref: Ref<GroupListRef>) {
           <div
             onClick={() => {
               handleClicked(grp.id);
+              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+              //@ts-ignore
               dispatch(addGroup({ yeargroup: grp.yeargroup, id: grp.id }));
             }}
             key={grp.id}
@@ -76,6 +75,11 @@ function GroupList({ groups }: GroupListProps, ref: Ref<GroupListRef>) {
             <div className="font-bold">{grp.yeargroup}</div>
           </div>
         ))}
+        <div className="mt-8 w-full" onClick={handleAddGroup}>
+          <li className="bg-blue-400 hover:scale-105 transition-all cursor-pointer rounded-full text-center py-3">
+            <div className="font-bold text-2xl text-white">Add Group?</div>
+          </li>
+        </div>
       </div>
     );
   }
@@ -83,4 +87,4 @@ function GroupList({ groups }: GroupListProps, ref: Ref<GroupListRef>) {
   return content;
 }
 
-export default forwardRef(GroupList);
+export default GroupList;

@@ -3,9 +3,10 @@ import { useAppSelector } from "@/hooks";
 import { setIndexFileNav, toggleMenu } from "@/store/features/counterslice";
 import { SideBar as SideBarEn } from "@/types/prismatypes";
 import { Autocomplete, TextField } from "@mui/material";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { FiAlignJustify } from "react-icons/fi";
 import { useDispatch } from "react-redux";
+import { RxCross1 } from "react-icons/rx";
 
 function Navigation({
   units = [],
@@ -18,7 +19,7 @@ function Navigation({
   const sideBarNav = useAppSelector((state) => state.counter.navSideBar);
   const indexFileNav = useAppSelector((state) => state.counter.indexFileNav);
   const toggledMenu = useAppSelector((state) => state.counter.toggleMenu);
-  console.log(indexFileNav);
+
   const [searchTerm, setSearchTerm] = useState("");
 
   const dispatch = useDispatch();
@@ -36,27 +37,45 @@ function Navigation({
   }
 
   const searchUnits = units.map((unit, i) => ({
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    //@ts-ignore
     label: unit.unitname,
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    //@ts-ignore
     id: unit.id,
     index: i,
   }));
-
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  //@ts-ignore
   const files = units[indexFileNav]?.files?.map((file, index) => ({
     url: file.url,
     id: file.id,
     index,
     label: file.filename,
   }));
+  useEffect(() => {
+    const handleResize = () => {
+      const isMobileDevice = window.innerWidth <= 768; // Adjust breakpoint as needed
+      dispatch(toggleMenu(isMobileDevice));
+    };
 
-  // console.log(units);
-  // console.log(indexFileNav);
+    // Initial check on mount
+    handleResize();
 
-  // console.log(searchTerm);
+    // Add event listener for window resize
+    window.addEventListener("resize", handleResize);
+
+    // Clean up event listener on unmount
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, [dispatch]);
 
   return (
     <nav>
       <i onClick={toggleSidebar} ref={ref} className="bx bx-menu">
-        <FiAlignJustify size={30} className="text-blue-500" />
+        {toggledMenu && <FiAlignJustify size={30} className="text-blue-500" />}
+        {!toggledMenu && <RxCross1 className="text-blue-500" size={30} />}
       </i>
 
       {sideBarNav === SideBarEn.classstore && (
@@ -68,16 +87,26 @@ function Navigation({
               renderOption={(props, option) => (
                 <li
                   {...props}
+                  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                  //@ts-ignore
                   key={option.id}
                   onClick={(e: React.MouseEvent<HTMLLIElement, MouseEvent>) => {
+                    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                    //@ts-ignore
                     props?.onClick(e);
 
                     if (indexFileNav === undefined) {
+                      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                      //@ts-ignore
                       dispatch(setIndexFileNav(option.index));
                     }
                   }}
                 >
-                  {option.label}
+                  {
+                    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                    //@ts-ignore
+                    option.label
+                  }
                 </li>
               )}
               sx={{ width: 300 }}

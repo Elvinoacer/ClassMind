@@ -1,18 +1,18 @@
 "use client";
-import * as React from "react";
-import { styled, useTheme } from "@mui/material/styles";
 import DashboardIcon from "@mui/icons-material/Dashboard";
+import DownloadIcon from "@mui/icons-material/Download";
+import PrintIcon from "@mui/icons-material/Print";
+import Button from "@mui/material/Button";
+import Grid from "@mui/material/Grid2";
+import Paper from "@mui/material/Paper";
+import Stack from "@mui/material/Stack";
+import { styled, useTheme } from "@mui/material/styles";
 import { AppProvider, Navigation, Router } from "@toolpad/core/AppProvider";
 import {
   PageContainer,
   PageContainerToolbar,
 } from "@toolpad/core/PageContainer";
-import Grid from "@mui/material/Grid2";
-import Paper from "@mui/material/Paper";
-import Stack from "@mui/material/Stack";
-import Button from "@mui/material/Button";
-import PrintIcon from "@mui/icons-material/Print";
-import DownloadIcon from "@mui/icons-material/Download";
+import * as React from "react";
 
 const NAVIGATION: Navigation = [
   {
@@ -50,7 +50,7 @@ function PageToolbar() {
         <Button
           variant="outlined"
           size="small"
-          color="neutral"
+          color="info"
           startIcon={<DownloadIcon fontSize="inherit" />}
         >
           Download
@@ -58,7 +58,7 @@ function PageToolbar() {
         <Button
           variant="outlined"
           size="small"
-          color="neutral"
+          color="secondary"
           startIcon={<PrintIcon fontSize="inherit" />}
         >
           Print
@@ -68,7 +68,9 @@ function PageToolbar() {
   );
 }
 
-export default function PageContainerBasic(props: any) {
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+//@ts-ignore
+export default function PageContainerBasic(props) {
   const { window } = props;
   const router = useDemoRouter("/orders");
   const theme = useTheme();

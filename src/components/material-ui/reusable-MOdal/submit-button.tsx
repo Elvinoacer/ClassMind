@@ -2,10 +2,14 @@ import { LoadingButton } from "@mui/lab";
 import React, { useEffect } from "react";
 import { useFormStatus } from "react-dom";
 
-function SubmitButton({ setModal }: { setModal: (val: boolean) => void }) {
+function SubmitButton({
+  setModal,
+  loading,
+}: {
+  loading: boolean;
+  setModal: (val: boolean) => void;
+}) {
   const { pending, data } = useFormStatus();
-
-  console.log("Hey LISTEN", pending, data);
 
   useEffect(() => {
     if (data) {
@@ -18,7 +22,7 @@ function SubmitButton({ setModal }: { setModal: (val: boolean) => void }) {
       className="border-[0.5px]"
       disabled={pending}
       type="submit"
-      loading={pending}
+      loading={pending || loading}
     >
       {pending ? "Loading" : "Continue"}
     </LoadingButton>

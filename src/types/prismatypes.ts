@@ -21,12 +21,20 @@ export enum FormTypesNav {
   group = "group",
   unit = "unit",
 }
+export interface StudentDbType {
+  id?: string;
+  institutionGroupId: string;
+  picture: string;
+  email: string;
+  firstname: string;
+}
 
 export interface Student {
   email: string;
   files?: File[];
   firstname: string;
   id: string;
+  picture?: string;
   InstitutionGroup?: InstitutionGroup;
   institutionGroupId?: string;
 }
@@ -64,31 +72,8 @@ export interface FavoriteFile extends FileType {
   favoritedBy: Student[];
   Student: Student;
 }
-// const imh={actualFileSize
-// :
-// 0,
-// createdAt
-// :
-// "2024-12-22T15:33:43.930Z",
-// filename
-// :
-// "M-PESA Business Admin Form 2023 V2 (1)",
-// filesize
-// :
-// "277.694 KB",
-// id
-// :
-// "00d4199c-3374-4f29-a0c0-30b4db844967",
-// studentId
-// :
-// "6b719f9d-b24d-4d01-a105-0f50fe9eedda",
-// unitId
-// :
-// "ea011b96-f664-4a26-897f-3963b135f2f6",
-// url
-// :
-// "https://classmind-images.s3.amazonaws.com/elvinTrial/M-PESA Business Admin Form 2023 V2 (1).pdf"}
-interface InstitutionGroup {
+
+export interface InstitutionGroup {
   id: string;
   InstitutionCourse: InstitutionCourse;
   institutionCourseId: string;
@@ -103,7 +88,7 @@ export interface Unit {
   files?: FileType[];
 }
 
-interface InstitutionCourse {
+export interface InstitutionCourse {
   campusId: null | string;
   coursecode: string;
   coursename: string;
@@ -171,4 +156,61 @@ export interface FileTypeR {
   studentId: string;
   unitId: string;
   url: string;
+}
+
+export interface KindeUser {
+  id: string;
+  email: string;
+  family_name: string;
+  given_name: string;
+  picture?: string; //https://lh3.googleusercontent.com/a/ACg8ocLSWXqW0828q_IzxK6bQbVI-u9HZ3qblqe86csT5mIDI78bNS6a=s96-c --configure this in nextjs
+  username?: string;
+  phone_number?: string;
+}
+
+export interface MessageType {
+  content: string;
+  type: "text" | "server";
+  own: boolean;
+  picture?: string;
+  studentId?: string;
+  user: { name: string; id: string };
+}
+
+export interface ChatScreenProps {
+  institutionGroupId: string;
+  yearGroup: string;
+  studentId: string;
+  courseCode: string;
+  picture?: string;
+  studentname: string;
+}
+
+export interface UnitTypeDB {
+  id?: string;
+  institutionGroupId: string;
+  unitname: string;
+  files: FileTypeDB[];
+}
+
+export interface FileTypeDB {
+  Student?: StudentDbType;
+  actualFileSize: number;
+  createdAt: string;
+  favoritedBy: FavoritedBy[];
+  filename: string;
+  filesize: string;
+  id?: string;
+  groupId?: string;
+  studentId: string;
+  unitId: string;
+  url: string;
+}
+
+export interface FavoritedBy {
+  email: string;
+  firstname: string;
+  id?: string;
+  institutionGroupId: string;
+  picture?: string;
 }

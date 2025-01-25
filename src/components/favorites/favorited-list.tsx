@@ -1,7 +1,5 @@
 import { Student } from "@/types/prismatypes";
 import Image from "next/image";
-import React from "react";
-import image1 from "@/assets/img/star-trophy.png";
 
 function truncateText(text: string, maxLength: number) {
   if (text.length <= maxLength) {
@@ -13,10 +11,11 @@ function truncateText(text: string, maxLength: number) {
 
 function FavoritedList({
   favoritedBys,
+  studentId,
 }: {
+  studentId: string;
   favoritedBys: { filename: string; favBys: Student[] }[];
 }) {
-  console.log("FavoriteBys: +++++ " + favoritedBys);
   return (
     <ul className="">
       {favoritedBys &&
@@ -28,14 +27,27 @@ function FavoritedList({
 
             {favBy?.favBys?.map((fav) => (
               <li className="pr-6" key={fav.id}>
-                <span>{fav?.firstname}</span>
+                <span>{fav?.id === studentId ? "You" : fav?.firstname}</span>
                 <div className="profile-pic-box">
-                  <Image width={100} src={image1} alt="" className="img-FAV" />
+                  {fav?.picture && (
+                    <Image
+                      width={100}
+                      height={100}
+                      src={fav?.picture}
+                      alt=""
+                      className="img-FAV"
+                    />
+                  )}
                   {/* TODO GET USER IMAGES */}
-                  {/* <span className="text-blue-800">E</span> */}
+                  {!fav?.picture && (
+                    <span className="text-blue-800">
+                      {fav?.firstname.charAt(0).toUpperCase()}
+                    </span>
+                  )}
                 </div>
               </li>
             ))}
+            {favBy?.favBys?.length === 0 && <div>Oops!, none yet!</div>}
             <div className="line"></div>
           </div>
         ))}
