@@ -11,7 +11,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 export const pokemonApi = createApi({
   reducerPath: "pokemonApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: "https://classmind-rouge.vercel.app/",
+    baseUrl: "https://classmind-rouge.vercel.app/api",
   }),
   endpoints: (builder) => ({
     getAllUniversities: builder.query({
