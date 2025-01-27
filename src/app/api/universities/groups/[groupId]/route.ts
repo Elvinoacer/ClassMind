@@ -50,3 +50,23 @@ export async function POST(
     return NextResponse.json({ message: error });
   }
 }
+
+export async function DELETE(
+  req: Request,
+  context: { params: Promise<{ groupId: string }> }
+) {
+  const { groupId } = await context.params;
+  try {
+    const deletedGroup = await db.institutionGroup.delete({
+      where: {
+        id: groupId,
+      },
+    });
+    return NextResponse.json({
+      message: "Group deleted successfully",
+      group: deletedGroup,
+    });
+  } catch (error) {
+    return NextResponse.json(error);
+  }
+}

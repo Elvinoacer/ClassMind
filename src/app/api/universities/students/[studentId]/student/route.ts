@@ -29,3 +29,23 @@ export async function GET(
     return NextResponse.json(error);
   }
 }
+
+export async function DELETE(
+  req: Request,
+  context: { params: Promise<{ studentId: string }> }
+) {
+  const { studentId } = await context.params;
+  try {
+    const deletedStudent = await db.student.delete({
+      where: {
+        id: studentId,
+      },
+    });
+    return NextResponse.json({
+      message: "Student deleted successfully!",
+      deletedStudent,
+    });
+  } catch (error) {
+    return NextResponse.json(error);
+  }
+}

@@ -11,9 +11,10 @@ export async function GET() {
 }
 
 // /DELETE ALL FILES
-export async function DELETE() {
+export async function DELETE(req: Request) {
+  const { fileId } = await req.json();
   try {
-    const files = await db.file.deleteMany();
+    const files = await db.file.deleteMany({ where: { id: fileId } });
     return NextResponse.json(files);
   } catch (error) {
     return NextResponse.json({ error: error });

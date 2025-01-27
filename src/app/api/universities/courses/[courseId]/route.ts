@@ -75,3 +75,20 @@ export async function POST(
     return NextResponse.json(error);
   }
 }
+
+export async function DELETE(
+  req: Request,
+  context: { params: Promise<{ courseId: string }> }
+) {
+  const { courseId } = await context.params;
+  try {
+    const deletedCourse = await db.institutionCourse.delete({
+      where: {
+        id: courseId,
+      },
+    });
+    return NextResponse.json(deletedCourse)
+  } catch (error) {
+    return NextResponse.json(error);
+  }
+}

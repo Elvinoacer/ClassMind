@@ -56,3 +56,22 @@ export async function POST(
     return NextResponse.json({ errorMessage: error });
   }
 }
+
+export async function DELETE(
+  req: Request,
+  context: { params: Promise<{ unitId: string }> }
+) {
+  const { unitId } = await context.params;
+
+  try {
+    const deletdUnit = await db.unit.delete({
+      where: { id: unitId },
+    });
+    return NextResponse.json({
+      message: "Unit deleted successfully!",
+      deletdUnit,
+    });
+  } catch (error) {
+    return NextResponse.json({ errorMessage: error });
+  }
+}
