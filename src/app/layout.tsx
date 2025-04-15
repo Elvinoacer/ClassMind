@@ -18,6 +18,9 @@ export const metadata: Metadata = {
   title: "ClassMind | Your choice doc store",
   description:
     "Optimized to store student documents and get good summary from them ",
+  other: {
+    "google-site-verification": "FnBgbL3m-7aOa245p2u7nsnsETobgmogt_15vWC8Taw",
+  },
 };
 
 export default function RootLayout({
